@@ -6,18 +6,31 @@ namespace DrinkShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        //private CropsShopContext _context;
+        public HomeController()//CropsShopContext context)
         {
-            _logger = logger;
+            //_context = context;
         }
-
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string sort = null, string search = null)
         {
             return View();
         }
-
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+        public IActionResult RulesAndConditions()
+        {
+            return View();
+        }
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+        public IActionResult Questions()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
