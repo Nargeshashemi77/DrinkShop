@@ -1,4 +1,4 @@
-﻿namespace DrinkShop.Models
+﻿namespace DrinkShop.Models.Entities
 {
     public class Order
     {

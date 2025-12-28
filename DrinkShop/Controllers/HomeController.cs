@@ -1,19 +1,40 @@
 using System.Diagnostics;
 using DrinkShop.Models;
+using DrinkShop.Models.Dtos;
+using DrinkShop.Models.Entities;
+using DrinkShop.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrinkShop.Controllers
 {
     public class HomeController : Controller
     {
-        //private CropsShopContext _context;
-        public HomeController()//CropsShopContext context)
+        private readonly IProductService productService;
+        public HomeController(IProductService productService)
         {
-            //_context = context;
+            this.productService = productService;
         }
-        public IActionResult Index(int page = 1, string sort = null, string search = null)
+        public async Task<IActionResult> Index(PagedListQuery pagedListQuery, CancellationToken cancellationToken, string sort = null, string search = null)
         {
-            return View();
+            if (pagedListQuery.PageNumber < 1)
+                return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
+
+            ViewData["page"] = pagedListQuery.PageNumber;
+
+            var result = await productService.GetAllProducts(pagedListQuery, cancellationToken);
+
+            int pageCount = (int)Math.Ceiling((decimal)result.Count);
+
+            ViewData["pagesCount"] = pageCount;
+
+            List<Product> products = result.Values;
+
+            if (products == null || products.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return View(products);
         }
         public IActionResult ContactUs()
         {

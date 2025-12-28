@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DrinkShop.Models
+namespace DrinkShop.Models.Entities
 {
     public class Product
     {
