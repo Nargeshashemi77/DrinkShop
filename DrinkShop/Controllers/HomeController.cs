@@ -1,40 +1,52 @@
-using System.Diagnostics;
-using DrinkShop.Models;
-using DrinkShop.Models.Dtos;
+using DrinkShop.DbContext;
 using DrinkShop.Models.Entities;
-using DrinkShop.Service;
+using DrinkShop.Shared;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace DrinkShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductService productService;
-        public HomeController(IProductService productService)
+        private DrinkShopContext _context;
+        public HomeController(DrinkShopContext context)
         {
-            this.productService = productService;
+            _context = context;
         }
-        public async Task<IActionResult> Index(PagedListQuery pagedListQuery, CancellationToken cancellationToken, string sort = null, string search = null)
+        public IActionResult Index(int page = 1, string sort = null, string search = null)
         {
-            if (pagedListQuery.PageNumber < 1)
+            if (page < 1)
                 return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
 
-            ViewData["page"] = pagedListQuery.PageNumber;
+            int limit = 8;
+            int skip = (page - 1) * limit;
+            double productCount, result;
 
-            var result = await productService.GetAllProducts(pagedListQuery, cancellationToken);
 
-            int pageCount = (int)Math.Ceiling((decimal)result.Count);
-
-            ViewData["pagesCount"] = pageCount;
-
-            List<Product> products = result.Values;
-
-            if (products == null || products.Count == 0)
+            IQueryable<Product> products;
+            if (search != null)
             {
-                return NotFound();
+                products = _context.products.Where(p => p.Name.Contains(search));
+                productCount = (double)_context.products.Where(p => p.Name.Contains(search)).Count();
+            }
+            else
+            {
+                products = _context.products;
+                productCount = (double)_context.products.Count();
             }
 
-            return View(products);
+            ViewData["page"] = page;
+            result = productCount / (double)limit;
+            int pageCount = (int)Math.Ceiling(result);
+            ViewData["pagesCount"] = pageCount;
+            List<Product> productViewModel;
+            if (sort != null)
+                productViewModel = filter.sorted_Products(products, sort, skip, limit);
+            else
+                productViewModel = products.Skip(skip).Take(limit).ToList();
+
+            if (productViewModel == null) { return NotFound(); }
+            return View(productViewModel);
         }
         public IActionResult ContactUs()
         {
