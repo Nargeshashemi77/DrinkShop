@@ -15,14 +15,16 @@
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5027",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DataBase_CONNECTION_STRING": "Data Source=DESKTOP-QDE3PR6\\SQLSERVER22;Initial Catalog=DrinkShop;Trust Server Certificate=True;Integrated Security=False;User ID=sa;Password=Etcb7kdf@4086;"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DataBase_CONNECTION_STRING": "Data Source=DESKTOP-QDE3PR6\\SQLSERVER22;Initial Catalog=DrinkShop;Trust Server Certificate=True;Integrated Security=False;User ID=sa;Password=Etcb7kdf@4086;"
       }
     }
   }

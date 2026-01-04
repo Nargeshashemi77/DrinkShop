@@ -13,11 +13,10 @@ builder.Configuration.AddJsonFile("appsettings.json");
 services.AddControllersWithViews()
     .AddRazorRuntimeCompilation();
 
-string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
 services.AddDbContext<DrinkShopContext>(options =>
 {
-    options.UseSqlServer(connectionString);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DB_CONNECTION_STRING"));
 });
 
 
