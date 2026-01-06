@@ -1,0 +1,7 @@
+﻿@using DrinkShop.Models.Entities
+
+@model List<Product>
+@*@{
+    ViewData["Title"] = "میوه جات";
+}*@
+@await Component.InvokeAsync("ShowProductByGroupComponent",Model);

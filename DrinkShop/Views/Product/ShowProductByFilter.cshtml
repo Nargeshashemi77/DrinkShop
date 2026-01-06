@@ -1,0 +1,9 @@
+﻿@using DrinkShop.Models.Entities
+
+@model List<Product>
+@{
+    //ViewData["Title"] = "ShowProductByFilter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@await Component.InvokeAsync("ShowProductByGroupComponent",Model);
+

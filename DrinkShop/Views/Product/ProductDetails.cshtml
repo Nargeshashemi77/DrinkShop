@@ -1,0 +1,298 @@
+﻿@using DrinkShop.Models.Entities
+@using DrinkShop.Models.ViewModel
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@model ProductDetailViewModel
+@{
+    ViewData["Title"] = "جزییات محصول";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ulong ShowReadablePrice;
+}
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">محصول </h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+<!-- Start Message Box For Add To Cart Response-->
+<div class="message-box" id="messageBox">
+    <span style="margin:10px 10px;padding:10px;" id="message-box-text"></span>
+    <button type="submit" class="close-button" id="closeButton"></button>
+</div>
+<!-- End Message Box For Add To Cart Response-->
+<section class="ec-page-content section-space-p product_page">
+    <div class="container">
+        <div class="row">
+            <div class="ec-pro-rightside ec-common-rightside col-lg-9 order-lg-last col-md-12 order-md-first">
+                <!-- Single product content Start -->
+                <div class="single-pro-block">
+                    <div class="single-pro-inner">
+                        <div class="row">
+                            <div class="single-pro-img">
+                                <div class="single-product-scroll">
+                                    <div class="single-product-cover">
+                                        <div class="single-slide zoom-image-hover">
+                                            <img style="width:350px;height:350px" class="img-responsive" src="~/assets/images/product-image/@(Model.product.productImage)" alt="عکس محصول">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="single-pro-desc">
+                                <div class="single-pro-content">
+                                    <h5 class="ec-single-title">@Model.product.Name</h5>
+                                    <div class="ec-single-rating-wrap">
+                                        <div class="ec-single-rating" style="border-left:none">
+                                            <i class="ecicon eci-star fill"></i>
+                                            <i class="ecicon eci-star fill"></i>
+                                            <i class="ecicon eci-star fill"></i>
+                                            <i class="ecicon eci-star fill"></i>
+                                            <i class="ecicon eci-star fill"></i>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="ec-single-price-stoke">
+                                        <div class="ec-single-price">
+                                            <span class="ec-single-ps-title">قیمت :</span>
+                                            <span>
+                                                @{
+                                                    ShowReadablePrice = (ulong)Model.product.Price;
+                                                }
+                                                <span class="new-price">@ShowReadablePrice.ToMoreReadable() تومان</span>
+                                            </span>
+                                        </div>
+                                        <div class="ec-single-stoke">
+                                            @*<span class="ec-single-ps-title">در انبار</span>*@
+                                            <span class="ec-single-sku">شناسه محصول: #@Model.product.id</span>
+                                            <input id="productIdSection" type="hidden" value="@Model.product.id" />
+                                        </div>
+                                    </div>
+
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <span id="UserIdentityName" style="display:none">@User.Identity.Name</span>
+                                        if (User.IsInRole("Buyer"))
+                                        {
+                                            @if (Model.product.Stock >= 10)
+                                            {
+                                                <div class="ec-single-qty">
+
+                                                    <div class="qty-plus-minus">
+                                                        <div class="dec ec_qtybtn">-</div>
+                                                        <input id="input-quantity" class="qty-input" type="text" maxlength="2" value="1">
+                                                        <div class="inc ec_qtybtn">+</div>
+                                                    </div>
+
+                                                    <div class="ec-single-cart">
+                                                        <button id="addToCart-submit-btn" class="btn btn-primary">افزودن به سبد خرید</button>
+                                                    </div>
+
+                                                    <div class="ec-single-wishlist">
+                                                        <a href="/Buyer/AddItemToFavorites?itemId=@Model.product.id" class="ec-btn-group wishlist" title="علاقه مندی"><img src="~/assets/images/icons/wishlist.svg" class="svg_img pro_svg" alt=""></a>
+                                                    </div>
+
+                                                </div>
+                                            }
+                                            else if (0 < Model.product.Stock && Model.product.Stock < 10)
+                                            {
+                                                <div class="ec-single-qty">
+
+                                                    <div class="qty-plus-minus">
+                                                        <div class="dec ec_qtybtn">-</div>
+                                                        <input id="input-quantity" class="qty-input" type="text" maxlength="2" value="1" readonly>
+                                                        <div class="inc ec_qtybtn">+</div>
+                                                    </div>
+                                                    <div class="ec-single-cart ">
+                                                        <button id="addToCart-submit-btn" class="btn btn-primary">افزودن به سبد خرید</button>
+                                                    </div>
+
+                                                    <div class="ec-single-wishlist">
+                                                        <a href="/Buyer/AddItemToFavorites?itemId=@Model.product.id" class="ec-btn-group wishlist" title="علاقه مندی"><img src="~/assets/images/icons/wishlist.svg" class="svg_img pro_svg" alt=""></a>
+                                                    </div>
+                                                </div>
+                                                <b><span style="color: red;">تنها @Model.product.Stock عدد در انبار باقیمانده است</span></b>
+
+                                                <br>
+
+                                                <br>
+                                            }
+                                            else
+                                            {
+                                                <b><span style="color: red;">ناموجود</span></b>
+
+                                                <br>
+
+                                                <br>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span id="UserIdentityName" style="display:none"></span>
+                                        <div class="ec-single-qty">
+                                            @if (Model.product.Stock >= 10)
+                                            {
+                                                <div class="qty-plus-minus">
+                                                    <div class="dec ec_qtybtn">-</div>
+                                                    <input id="input-quantity" class="qty-input" type="text" maxlength="2" value="1">
+                                                    <div class="inc ec_qtybtn">+</div>
+                                                </div>
+                                                <div class="ec-single-cart ">
+                                                    <button id="addToCart-submit-btn" type="submit" class="btn btn-primary">افزودن به سبد خرید</button>
+                                                </div>
+
+                                                <div class="ec-single-wishlist">
+                                                    <a href="/Buyer/AddItemToFavorites?itemId=@Model.product.id" class="ec-btn-group wishlist" title="علاقه مندی"><img src="~/assets/images/icons/wishlist.svg" class="svg_img pro_svg" alt=""></a>
+                                                </div>
+
+                                            }
+                                            else if (0 < Model.product.Stock && Model.product.Stock < 10)
+                                            {
+                                                <div class="ec-single-qty">
+
+                                                    <div class="qty-plus-minus">
+                                                        <div class="dec ec_qtybtn">-</div>
+                                                        <input id="input-quantity" class="qty-input" type="text" maxlength="2" value="1" readonly>
+                                                        <div class="inc ec_qtybtn">+</div>
+                                                    </div>
+
+                                                    <div class="ec-single-cart ">
+                                                        <button id="addToCart-submit-btn" class="btn btn-primary">افزودن به سبد خرید</button>
+                                                    </div>
+
+                                                    <div class="ec-single-wishlist">
+                                                        <a href="/Buyer/AddItemToFavorites?itemId=@Model.product.id" class="ec-btn-group wishlist" title="علاقه مندی"><img src="~/assets/images/icons/wishlist.svg" class="svg_img pro_svg" alt=""></a>
+                                                    </div>
+                                                </div>
+
+                                                <b><span style="color: red;">تنها @Model.product.Stock عدد در انبار باقیمانده است</span></b>
+
+                                                <br>
+
+                                                <br>
+                                            }
+                                            else
+                                            {
+                                                <b><span style="color: red;">ناموجود</span></b>
+
+                                                <br>
+
+                                                <br>
+                                            }
+                                        </div>
+
+                                    }
+                                    <div class="ec-single-social">
+                                        <ul class="mb-0">
+                                            <li class="list-inline-item facebook"><a href="#"><i class="ecicon eci-facebook"></i></a></li>
+                                            <li class="list-inline-item twitter"><a href="#"><i class="ecicon eci-twitter"></i></a></li>
+                                            <li class="list-inline-item instagram"><a href="#"><i class="ecicon eci-instagram"></i></a></li>
+                                            <li class="list-inline-item youtube-play"><a href="#"><i class="ecicon eci-youtube-play"></i></a></li>
+                                            <li class="list-inline-item behance"><a href="#"><i class="ecicon eci-behance"></i></a></li>
+                                            <li class="list-inline-item whatsapp"><a href="#"><i class="ecicon eci-whatsapp"></i></a></li>
+                                            <li class="list-inline-item plus"><a href="#"><i class="ecicon eci-plus"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Single product content End -->
+                <!-- Single product tab start -->
+                <div class="ec-single-pro-tab">
+                    <div class="ec-single-pro-tab-wrapper">
+                        <div class="ec-single-pro-tab-nav">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-details" role="tablist">توضیحات محصول</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-info" role="tablist">اطلاعات بیشتر</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review" role="tablist">نظرات</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content  ec-single-pro-tab-content">
+                            <div id="ec-spt-nav-details" class="tab-pane fade show active">
+                                <div class="ec-single-pro-tab-desc">
+                                    <p> @Model.product.Description</p>
+                                </div>
+                            </div>
+                            <div id="ec-spt-nav-info" class="tab-pane fade">
+                                <div class="ec-single-pro-tab-moreinfo">
+                                    <ul>
+                                        <li>
+                                            <span>موجودی</span> @Model.product.Stock
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="ec-spt-nav-review" class="tab-pane fade">
+                                <div class="row">
+                                    @foreach (var comment in Model.comments)
+                                    {
+                                        <div class="ec-t-review-wrapper">
+                                            <div class="ec-t-review-item">
+
+                                                <div class="ec-t-review-content">
+                                                    <div class="ec-t-review-top">
+                                                        <div class="ec-t-review-name">@comment.userName</div>
+                                                        <div class="ec-t-review-rating">
+                                                            <i class="ecicon eci-star fill"></i>
+                                                            <i class="ecicon eci-star fill"></i>
+                                                            <i class="ecicon eci-star fill"></i>
+                                                            <i class="ecicon eci-star fill"></i>
+                                                            <i class="ecicon eci-star fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ec-t-review-bottom">
+                                                        <p>@comment.comment</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="ec-ratting-content">
+                                        <h3>افزودن نظر</h3>
+                                        <div class="ec-ratting-form">
+                                            <form asp-controller="Comment" asp-action="addComment" asp-route-productId="@Model.product.id" asp-route-userName="@User.Identity.Name" method="post">
+                                                <div class="ec-ratting-input form-submit">
+                                                    <textarea id="Comment" name="Comment" placeholder="نظر شما"></textarea>
+                                                    <button class="btn btn-primary" type="submit" value="Submit">ثبت نظر</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- product details description area end -->
+            </div>
+            <!-- Sidebar Area Start -->
+            @await Component.InvokeAsync("ShowGroups","Sidebar")
+            <!-- Sidebar Area End -->
+        </div>
+    </div>
+</section>
+<script src="~/assets/js/plugins/addToCart.js?version=10"></script>
+
