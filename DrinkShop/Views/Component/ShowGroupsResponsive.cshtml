@@ -1,0 +1,34 @@
+﻿@using DrinkShop.Models.ViewModel
+@model List<GroupAndSubGroupViewModel>
+<ul class="sub-menu">
+    <li>
+        <a>همه</a>
+        @foreach (var allgroups in Model)
+        {
+            <ul class="sub-menu">
+                <li>
+                    <a asp-controller="Product" asp-action="ShowProductByGroupId" asp-route-groupId="@allgroups.groupId">@allgroups.groupName</a>
+                </li>
+            </ul>
+        }
+    </li>
+    @foreach (var groups in Model)
+    {
+        @if (groups.subGroops.Count != 0)
+        {
+            <li>
+                <a asp-controller="Product" asp-action="ShowProductByGroupId" asp-route-groupId="@groups.groupId">@groups.groupName</a>
+
+                @foreach (var subgroups in groups.subGroops)
+                {
+                    <ul class="sub-menu">
+                        <li>
+                            <a asp-controller="Product" asp-action="ShowProductBySubGroupId" asp-route-subGroupId="@subgroups.id">@subgroups.Name</a>
+                        </li>
+                    </ul>
+                }
+
+            </li>
+        }
+    }
+</ul>

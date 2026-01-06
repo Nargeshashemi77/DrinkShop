@@ -1,0 +1,21 @@
+﻿@using DrinkShop.Models.ViewModel
+@model List<GroupAndSubGroupViewModel>
+@*@{
+    ViewData["Title"] = "ShowCategories";
+}*@
+<ul class="mega-menu d-block">
+    <li class="d-flex">
+        @foreach (var groups in Model)
+        {
+            <ul class="d-block">
+                <li class="menu_title"><a asp-controller="Product" asp-action="ShowProductByGroupId" asp-route-groupId="@groups.groupId">@groups.groupName</a></li>
+                @foreach (var subgroups in groups.subGroops)
+                {
+                    <li>
+                        <a asp-controller="Product" asp-action="ShowProductBySubGroupId" asp-route-subGroupId="@subgroups.id">@subgroups.Name</a>
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+</ul>
