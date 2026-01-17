@@ -1,33 +1,45 @@
-using DrinkShop.DbContext;
-using DrinkShop.Models.Entities;
+﻿using DrinkShop.Data;
+using DrinkShop.Models;
+using DrinkShop.Models.View_Models;
 using DrinkShop.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+
 
 namespace DrinkShop.Controllers
 {
     public class HomeController : Controller
     {
-        private DrinkShopContext _context;
-        public HomeController(DrinkShopContext context)
+        private DrinkShopDbContext _context;
+        public HomeController(DrinkShopDbContext context)
         {
             _context = context;
         }
-        public IActionResult Index(int page = 1, string sort = null, string search = null)
+        public IActionResult Index(int page = 1, int limit = 9, string sort = null, string search = null, string filter = null)
         {
             if (page < 1)
                 return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
-
-            int limit = 8;
+            if (limit < 1)
+                return BadRequest(new { StatusCode = 400, message = "limit should be greater than 0" });
             int skip = (page - 1) * limit;
             double productCount, result;
 
 
             IQueryable<Product> products;
-            if (search != null)
+            if (search != null && filter == "available")
+            {
+                products = _context.products.Where(p => p.Name.Contains(search) && p.Stock == true);
+                productCount = (double)_context.products.Where(p => p.Name.Contains(search) && p.Stock == true).Count();
+            }
+            else if (search != null && filter == null)
             {
                 products = _context.products.Where(p => p.Name.Contains(search));
                 productCount = (double)_context.products.Where(p => p.Name.Contains(search)).Count();
+            }
+            else if (search == null && filter != null)
+            {
+                products = _context.products.Where(p => p.Stock == true);
+                productCount = (double)_context.products.Where(p => p.Stock == true).Count();
             }
             else
             {
@@ -39,32 +51,65 @@ namespace DrinkShop.Controllers
             result = productCount / (double)limit;
             int pageCount = (int)Math.Ceiling(result);
             ViewData["pagesCount"] = pageCount;
+
             List<Product> productViewModel;
             if (sort != null)
-                productViewModel = filter.sorted_Products(products, sort, skip, limit);
+                productViewModel = Filter.sorted_Products(products, sort, skip, limit);
             else
                 productViewModel = products.Skip(skip).Take(limit).ToList();
 
             if (productViewModel == null) { return NotFound(); }
             return View(productViewModel);
         }
+        [HttpGet]
+        public IActionResult WorkSampleList(int groupId = 0, int page = 1)
+        {
+            if (page < 1)
+                return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
+
+            int limit = 4;
+            int skip = (page - 1) * limit;
+            double productCount, result;
+
+            IQueryable<WorkSamples> workSampleList;
+
+            if (groupId == 0)
+            {
+                workSampleList = _context.workSamples;
+                productCount = workSampleList.Count();
+            }
+            else
+            {
+                workSampleList = _context.workSamples.Where(ws => ws.groupId == groupId);
+                productCount = workSampleList.Count();
+            }
+
+            ViewData["page"] = page;
+            result = productCount / (double)limit;
+            int pageCount = (int)Math.Ceiling(result);
+            ViewData["pagesCount"] = pageCount;
+
+            List<Group> groups = _context.groups.ToList();
+            WorkSampleListViewModel workSampleListViewModel = new WorkSampleListViewModel()
+            {
+                groups = groups,
+                Samples = workSampleList.Skip(skip).Take(limit).ToList()
+            };
+            return View(workSampleListViewModel);
+        }
         public IActionResult ContactUs()
         {
             return View();
         }
-        public IActionResult RulesAndConditions()
+        public IActionResult Team()
+        {
+            return View();
+        }
+        public IActionResult OurService()
         {
             return View();
         }
         public IActionResult AboutUs()
-        {
-            return View();
-        }
-        public IActionResult Questions()
-        {
-            return View();
-        }
-        public IActionResult Privacy()
         {
             return View();
         }

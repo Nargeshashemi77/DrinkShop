@@ -1,0 +1,149 @@
+﻿@model List<OrderViewModel>
+@{
+    ViewData["Title"] = $"{ViewData["OrdersType"]} Orders";
+    Layout = "~/Views/Shared/AdminPanel.cshtml";
+}
+@{
+    ulong ShowReadablePrice;
+}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+            <div>
+                @if (ViewData["OrdersType"].Equals("pending"))
+                {
+                    <h1>سفارشات در انتظار</h1>
+                }
+                else if (ViewData["OrdersType"].Equals("reffered"))
+                {
+                    <h1>سفارشات ارجاع داده شده</h1>
+                }
+                else if (ViewData["OrdersType"].Equals("doing"))
+                {
+                    <h1>سفارشات در حال انجام</h1>
+                }
+                else if (ViewData["OrdersType"].Equals("finished"))
+                {
+                    <h1>سفارشات انجام شده</h1>
+                }
+                else if (ViewData["OrdersType"].Equals("canceled"))
+                {
+                    <h1>سفارشات لغو شده</h1>
+                }
+                else
+                {
+                    <h1>سفارشات رد شده</h1>
+                }
+                <p class="breadcrumbs">
+                </p>
+            </div>
+            @*<div><a asp-controller="AddProduct" asp-action="addProduct" asp-route-message="Add" class="btn btn-primary">افزودن محصول</a></div>*@
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="responsive-data-table" class="table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>خریدار</th>
+                                        <th>شناسه محصول</th>
+                                        <th>نام محصول</th>
+                                        <th>عکس محصول</th>
+                                        @* <th>وزن</th> *@
+                                        <th>قیمت(تومان)</th>
+                                        @*<th>موجودی</th>*@
+                                        @* @if (User.IsInRole("Admin"))
+                                        {
+                                        <th>فروشنده</th>
+                                        } *@
+                                        <th>توضیحات مشتری</th>
+                                        <th>تاریخ ثبت</th>
+                                        <th>زمان ثبت</th>
+                                        <th>فعالیت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model[i].userName</td>
+                                            <td>@Model[i].productId</td>
+                                            <td>@Model[i].productName</td>
+                                            <td>
+                                                <img style="width:50px;height:50px" class="tbl-thumb" src="~/assets/images/product-image/@(Model[i].productImage)"
+                                                     alt="Product Image">
+                                            </td>
+                                            @{
+                                                ShowReadablePrice = (ulong)Model[i].productPrice;
+                                            }
+                                            <td>@ShowReadablePrice.ToMoreReadable()</td>
+
+                                            @* @if (Model[i].Stock)
+                                        {
+                                        <td>موجود</td>
+                                        }
+                                        else
+                                        {
+                                        <td>ناموجود</td>
+                                        }*@
+                                            <td><div style="padding:15px;width:250px">@Model[i].orderDescription</div></td>
+                                            <td>@Model[i].orderDate.ToShamsi()</td>
+                                            <td>@Model[i].orderDate.ToString("HH:mm:ss")</td>
+                                            <td>
+                                                <div>
+
+                                                    @*<button type="button"
+                                                class="btn btn-outline-success">
+                                                <a asp-controller="AddProduct" asp-action="ShowProduct" asp-route-productId="@Model[i].id">جزییات</a>
+                                                </button> <button type="button"
+                                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" data-display="static">
+                                                <span class="sr-only">اطلاعات</span>
+                                                </button>*@
+                                                    @if (ViewData["OrdersType"].Equals("pending"))
+                                                    {
+                                                        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="1" asp-route-wichOrdersList="pending" class="dropdown-item">ارجاع به سرویس کار</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="5" asp-route-wichOrdersList="pending" class="dropdown-item">رد سفارش</a>
+                                                        </div>
+                                                    }
+                                                    else if (ViewData["OrdersType"].Equals("reffered"))
+                                                    {
+                                                        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="0" asp-route-wichOrdersList="reffered" class="dropdown-item">در انتظار</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="5" asp-route-wichOrdersList="reffered" class="dropdown-item">رد سفارش</a>
+                                                        </div>
+                                                    }
+                                                    else if (ViewData["OrdersType"].Equals("rejected"))
+                                                    {
+                                                        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="0" asp-route-wichOrdersList="rejected" class="dropdown-item">در انتظار</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="1" asp-route-wichOrdersList="rejected" class="dropdown-item">ارجاع به سرویس کار</a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

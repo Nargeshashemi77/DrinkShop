@@ -1,5 +1,5 @@
-using DrinkShop.DbContext;
-using DrinkShop.Models.Entities;
+using DrinkShop.Data;
+using DrinkShop.Models;
 using DrinkShopShop.PersianTranslationError;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ services.AddControllersWithViews()
     .AddRazorRuntimeCompilation();
 
 
-services.AddDbContext<DrinkShopContext>(options =>
+services.AddDbContext<DrinkShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DB_CONNECTION_STRING"));
 });
@@ -22,7 +22,7 @@ services.AddDbContext<DrinkShopContext>(options =>
 
 services.AddIdentity<User, IdentityRole>(option =>
     option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10))
-    .AddEntityFrameworkStores<DrinkShopContext>()
+    .AddEntityFrameworkStores<DrinkShopDbContext>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<PersianIdentityErrorDescriber>();
 
@@ -40,5 +40,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-DbInitializer.Seed(app);
+Database_Initializer.Seed(app);
 app.Run();

@@ -1,0 +1,76 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<!-- section start -->
+<section class="login-page  section-b-space cmn_bg_yellow">
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>ایجاد حساب</h3>
+                <div class="theme-card">
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        <div class="form-row">
+                            <div class="col-md-9">
+                                <label for="email">ایمیل</label>
+                                <input asp-for="Email" type="text" class="form-control" id="email" placeholder="ایمیل" required="">
+                                <br /><span asp-validation-for="Email" class="text-danger"></span><br /><br />
+                            </div>
+                            <div class="col-md-9">
+                                <label for="Password">رمزعبور</label>
+                                <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="رمز عبور را وارد کنید" required=""><br />
+                                <input id="PasswordCheck" type="checkbox" /> نمایش رمز<br />
+                                <br /><span asp-validation-for="Password" class="text-danger"></span><br /><br />
+                            </div>
+                            <div class="col-md-9">
+                                <label for="ConfirmPassword">تکرار رمزعبور</label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" placeholder="تکرار رمز عبور را وارد کنید" required=""><br />
+                                <input id="ConfirmPasswordCheck" type="checkbox" /> نمایش رمز<br />
+                                <br /><span asp-validation-for="ConfirmPassword" class="text-danger"></span><br /><br />
+                            </div>
+                        </div>
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div><br /><br />
+                        <div class="form-row">
+                            <button class="btn btn-solid" type="submit">ایجاد حساب</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        {
+            const PasswordCheckElement = document.getElementById("PasswordCheck");
+            const PasswordInputElement = document.getElementById("Password");
+
+            const ConfirmPasswordCheckElement = document.getElementById("ConfirmPasswordCheck");
+            const ConfirmPasswordInputElement = document.getElementById("ConfirmPassword");
+
+          
+            PasswordCheckElement.addEventListener("click", () => {
+                if (PasswordCheckElement.checked)
+                    PasswordInputElement.type = "text";
+                else
+                    PasswordInputElement.type = "password";
+            });
+
+            ConfirmPasswordCheckElement.addEventListener("click", () => {
+                if (ConfirmPasswordCheckElement.checked)
+                    ConfirmPasswordInputElement.type = "text";
+                else
+                    ConfirmPasswordInputElement.type = "password";
+            });
+        }
+    </script>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>
+<!-- section End -->

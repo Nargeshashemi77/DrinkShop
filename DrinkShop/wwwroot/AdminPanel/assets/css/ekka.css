@@ -7,19 +7,19 @@
  */
 
 @font-face {
-    font-family: iranyekan;
-    font-style: normal;
-    font-weight: normal;
-    src: url("../../../assets/fonts/1-IranSansWeb/IRANSansWeb.eot");
-    src: url("../../../assets/1-IranSansWeb/IRANSansWeb.eot?#iefix") format("embedded-opentype"), url("../../../assets/1-IranSansWeb/IRANSansWeb.woff") format("woff"), url("../../../assets/1-IranSansWeb/IRANSansWeb.woff") format("woff"), url("../../../assets/1-IranSansWeb/IRANSansWeb.ttf") format("truetype");
+  font-family: Vazir;
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/1-IranSansWeb/IRANSansWeb.eot");
+  src: url("../fonts/1-IranSansWeb/IRANSansWeb.eot?#iefix") format("embedded-opentype"), url("../fonts/1-IranSansWeb/IRANSansWeb.woff") format("woff"), url("../fonts/1-IranSansWeb/IRANSansWeb.woff") format("woff"), url("../fonts/1-IranSansWeb/IRANSansWeb.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: iranyekan;
-    font-style: normal;
-    font-weight: normal;
-    src: url("../../../assets/fonts/2-IranYekan/iranyekanwebregular.eot");
-    src: url("../../../assets/fonts/2-IranYekan/iranyekanwebregular.eot?#iefix") format("embedded-opentype"), url("../../../assets/fonts/2-IranYekan/iranyekanwebregular.woff") format("woff"), url("../../../assets/fonts/2-IranYekan/iranyekanwebregular.woff") format("woff"), url("../../../assets/fonts/2-IranYekan/iranyekanwebregular.ttf") format("truetype");
+  font-family: iranyekan;
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/2-IranYekan/iranyekanwebregular.eot");
+  src: url("../fonts/2-IranYekan/iranyekanwebregular.eot?#iefix") format("embedded-opentype"), url("../fonts/2-IranYekan/iranyekanwebregular.woff") format("woff"), url("../fonts/2-IranYekan/iranyekanwebregular.woff") format("woff"), url("../fonts/2-IranYekan/iranyekanwebregular.ttf") format("truetype");
 }
 
 :root {

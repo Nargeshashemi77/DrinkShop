@@ -1,0 +1,150 @@
+﻿@model ProductDetailViewModel
+@{
+    ViewData["Title"] = "جزییات محصول";
+    Layout = "~/Views/Shared/AdminPanel.cshtml";
+    //ulong ShowReadablePrice;
+}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+            <div>
+                <h1>جزییات محصول</h1>
+            </div>
+            <div><a asp-controller="AddProduct" asp-action="EditProduct" asp-route-productId="@Model.product.id" class="btn btn-primary">ویرایش</a></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default">
+                    <div class="card-header card-header-border-bottom">
+                        <h2>جزییات محصول</h2>
+                    </div>
+                    <div class="card-body product-detail">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6">
+                                <div class="row">
+                                    <div class="single-pro-img">
+                                        <div class="single-product-scroll">
+                                            <div class="single-product-cover">
+                                                <div class="single-slide zoom-image-hover">
+                                                    <img class="img-responsive"
+                                                         src="~/assets/images/product-image/@(Model.product.productImage)" alt="عکس محصول">
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5 col-lg-6">
+                                <div class="row product-overview">
+                                    <div class="col-12">
+                                        <h5 class="product-title">@Model.product.Name</h5>
+                                        <p class="product-rate">
+                                            <i class="mdi mdi-star is-rated"></i>
+                                            <i class="mdi mdi-star is-rated"></i>
+                                            <i class="mdi mdi-star is-rated"></i>
+                                            <i class="mdi mdi-star is-rated"></i>
+                                            <i class="mdi mdi-star is-rated"></i>
+                                        </p>
+                                        
+                                        <p class="product-sku">شناسه#: @Model.product.id</p>
+                                        @if (Model.product.Summary != null)
+                                        {
+                                            <p><b>خلاصه توضیحات</b> :@Model.product.Summary</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row review-rating mt-4">
+                            <div class="col-12">
+                                <ul class="nav nav-tabs" id="myRatingTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="product-detail-tab"
+                                           data-bs-toggle="tab" data-bs-target="#productdetail"
+                                           href="#productdetail" role="tab" aria-selected="true">
+                                            <i class="mdi mdi-library-books mr-1"></i> توضیحات
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="product-information-tab"
+                                           data-bs-toggle="tab" data-bs-target="#productinformation"
+                                           href="#productinformation" role="tab" aria-selected="false">
+                                            <i class="mdi mdi-information mr-1"></i>مشخصات
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="product-reviews-tab"
+                                           data-bs-toggle="tab" data-bs-target="#productreviews"
+                                           href="#productreviews" role="tab" aria-selected="false">
+                                            <i class="mdi mdi-star-half mr-1"></i> نظرات
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent2">
+                                    <div class="tab-pane pt-3 fade show active" id="productdetail" role="tabpanel">
+                                        <p> @Model.product.Description</p>
+                                    </div>
+                                    <div class="tab-pane pt-3 fade" id="productinformation" role="tabpanel">
+                                        <ul>
+                                            <li>
+                                                <span>وضعیت :</span>
+                                                @if (Model.product.Stock)
+                                                {
+                                                    <span>موجود</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>ناموجود</span>
+                                                }
+                                            </li>
+                                            @if (Model.product.Color != null)
+                                            {
+                                                <li>
+                                                    <span>رنگ :</span>@Model.product.Color
+                                                </li>
+                                            }
+                                            @if (Model.product.Material != null)
+                                            {
+                                                <li>
+                                                    <span>جنس :</span>@Model.product.Material
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <div class="tab-pane pt-3 fade" id="productreviews" role="tabpanel">
+                                        @foreach (var comment in Model.comments)
+                                        {
+                                            <div class="ec-t-review-wrapper">
+                                                <div class="ec-t-review-item">
+
+                                                    <div class="ec-t-review-content">
+                                                        <div class="ec-t-review-top">
+                                                            <p class="ec-t-review-name">@comment.userName</p>
+                                                            <div class="ec-t-rate">
+                                                                <i class="mdi mdi-star is-rated"></i>
+                                                                <i class="mdi mdi-star is-rated"></i>
+                                                                <i class="mdi mdi-star is-rated"></i>
+                                                                <i class="mdi mdi-star is-rated"></i>
+                                                                <i class="mdi mdi-star is-rated"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ec-t-review-bottom">
+                                                            <p>@comment.comment</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

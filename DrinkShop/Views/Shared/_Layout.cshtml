@@ -1,49 +1,337 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DrinkShop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DrinkShop.styles.css" asp-append-version="true" />
+
+    <meta charset="utf-8">
+    <meta name="author" content="pixelstrap">
+    <meta name="description" content="وبسایت طراحی، تولید و اجرا دکوراسیون داخلی منزل و ادارات">
+    <meta name="keywords" content="دکوراسیون داخلی , دکوراسیون داخلی منزل , طراحی و تولید دکوراسیون , طراحی دکوراسیون , کاغذ دیواری , پارکت , پرده , مبلمان">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Site Title -->
+    <title> دکوراسیون داخلی - @ViewData["Title"]</title>
+
+    <!-- Fav icon -->
+    <link rel="shortcut icon" href="~/assets/images/ecommerce/favicon.png">
+
+    <!-- Font Family-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+
+    <!-- Themify icon -->
+    <link rel="stylesheet" href="~/assets/css/themify.css">
+
+    <!-- Flat icon icon -->
+    <link rel="stylesheet" href="~/assets/css/flaticon.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="~/assets/css/animate.min.css">
+    <link rel="stylesheet" href="~/assets/css/aos.css">
+
+    <!-- Owl carousel css-->
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/assets/css/owl.theme.default.min.css">
+
+    <!--Slick slider css-->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/slick-theme.css">
+
+    <!-- zoom css-->
+    <link rel="stylesheet" href="~/assets/css/magnific-popup.css">
+
+    <!-- Style css-->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/color5.css" media="screen" id="color">
+
+
+
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DrinkShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+<body class="rtl">
+
+    <div class="ecommerce-layout">
+
+        <!--Top-Section-->
+        <div class="top-contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="top-content">
+                            <ul>
+                                <li><i class="fa fa-phone" aria-hidden="true"></i>12345678 (051)</li>
+                                <li><i class="fa fa-envelope-o" aria-hidden="true"></i>anything@gmail.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="top-social">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                                <li><a href="#"></a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+        <!--End-Top-Section-->
+
+        <div class="main-header">
+
+            <!-- Logo & Btn Section Start -->
+            <div class="mid-header">
+                <div class="container">
+                    <div class="row">
+                        <div class=" col-4">
+                            <a href="ecommerce.html" class="brand-logo"><img src="~/assets/images/ecommerce/WebsiteLogo.png" alt="logo"></a>
+                        </div>
+                        <div class="col-8">
+                            <div class="nav-section">
+                                <nav id="main-nav">
+                                    <div class="toggle-nav">
+                                        <i class="fa fa-bars sidebar-bar"></i>
+                                    </div>
+                                    <ul id="main-menu" class="sm pixelstrap sm-horizontal">
+                                        <li>
+                                            <div class="mobile-back text-right">بازگشت<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
+                                        </li>
+                                        <li>
+                                            <a href="/">خانه</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">صفحات</a>
+                                            <ul>
+                                                <li class="nav-item"><a class="nav-link" href="/Home/AboutUs">درباره</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="/Home/OurService">خدمات</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="/Home/Team">تیم خدمات</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="/Home/ContactUs">تماس با ما</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="mega">
+                                            <a href="#">دسته بندی</a>
+                                            <ul class="mega-menu full-mega-menu">
+                                                <li>
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            @await Component.InvokeAsync("ShowGroups","Navbar")
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">وبلاگ</a>
+                                            <ul>
+                                                <li class="nav-item"><a class="nav-link" href="#">لیست وبلاگ ها</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="#">جزئیات وبلاگ</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="/Home/WorkSampleList">نمونه کار ها</a>
+                                        </li>
+                                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Buyer"))
+                                        {
+                                            <li>
+                                                <a href="#">پنل کاربری</a>
+                                                <ul>
+                                                    <li class="nav-item"><a class="nav-link" href="/Buyer/Profile">اطلاعات کاربری</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="/Buyer/ChangePassword">تغییر رمز عبور</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="/Indent/UserOrders">لیست سفارشات</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="blogs-leftside.html">علاقه مندیها</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Buyer"))
+                            {
+                                <div class="cart-box">
+                                    <a href="/Indent/UserOrders"><i class="ti-shopping-cart-full"></i></a>
+                                    <div class="logo_content">
+                                        <h5 class="title">سفارشات جاری</h5>
+                                        <span>@await Component.InvokeAsync("numberOFUserCartItemComponent","header") عدد</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Logo & Btn Section End -->
+        </div>
+    </div>
+    <div>
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 1404 - DrinkShop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @{
+        #region Footer
+    }
+    <!-- Footer Start -->
+    <footer class="footer-ecommerce">
+        <div class="upper-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer_first">
+                            <div class="footer-title mobile-title">
+                                <h3>درباره ما</h3>
+                            </div>
+                            <div class="footer-contant">
+                                <img src="~/assets/images/ecommerce/DarkWebsiteLogo.png" class="foot_logo" alt="">
+                                <p>IDS طراحی و اجرا دکوراسیون داخلی منزل همگام با متد های روز دنیا و باکیفیت ترین متریال</p>
+                                <div class="footer_social">
+                                    <div>
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer_second">
+                            <div>
+                                <div class="footer-title">
+                                    <h3>حساب من</h3>
+                                </div>
+                                <div class="footer-contant">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>لیست علاقه مندی ها</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>تی و سی</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>نکات حقوقی</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>تماس با ما</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>جزئیات وبلاگ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer_second">
+                            <div>
+                                <div class="footer-title">
+                                    <h3>اطلاعات</h3>
+                                </div>
+                                <div class="footer-contant">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>تمام مجموعه</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>تحویل</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>توجه جستجو</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>بهترین فروشنده</a></li>
+                                        <li><a href="#"><i class="fa fa-chevron-circle-right"></i>محصول جدید</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer_forth">
+                            <div class="footer-title">
+                                <h3>اطلاعات</h3>
+                            </div>
+                            <div class="footer-contant">
+                                <ul>
+                                    <li><i class="fa fa-map-marker" aria-hidden="true"></i>مشهد - جلال آل احمد 64</li>
+                                    <li><i class="fa fa-phone" aria-hidden="true"></i>تماس با ما: 12345678 (051)</li>
+                                    <li><i class="fa fa-envelope-o" aria-hidden="true"></i>ایمیل به ما: anything@gmail.com</li>
+                                    <li><i class="fa fa-fax" aria-hidden="true"></i>فکس: 123456789</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- Copyright section Start -->
+        <section class="copyright_sec">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="cop_p">
+                            <p>تمام حقوق اين وب‌سايت برای برند IDS محفوظ است</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="copy_link">
+                            <ul>
+                                <li><a href="#">شرایط و ضوابط</a></li>
+                                <li><a href="#">حریم خصوصی</a></li>
+                                <li><a href="#">تماس با ما</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Copyright section End -->
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Footer End -->
+    <!-- Tap on Top -->
+    <div class="tap-top top-cls top_5">
+        <div>
+            <i class="fa fa-angle-double-up"></i>
+        </div>
+    </div>
+    <!-- Tap on Ends -->
+    @{
+        #endregion
+    }
+    <!-- js file -->
+    <script src="~/assets/js/jquery-3.3.1.min.js"></script>
+
+    <!-- zoom js file -->
+    <script src="~/assets/js/jquery.magnific-popup.js"></script>
+
+    <!-- popper js file -->
+    <script src="~/assets/js/popper.min.js"></script>
+
+    <!-- bootstrap js file -->
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    <!-- Owl carousel js file-->
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+
+    <!-- menu js-->
+    <script src="~/assets/js/menu.js"></script>
+
+    <!-- Lazy Loader js file-->
+    <script src="~/assets/js/lazysizes.min.js"></script>
+
+    <!-- Counter Js File -->
+    <script src="~/assets/js/jquery.counterup.min.js"></script>
+    <script src="~/assets/js/jquery.waypoints.min.js"></script>
+
+    <!-- slick js-->
+    <script src="~/assets/js/slick.js"></script>
+
+    <!-- AOS js file-->
+    <script src="~/assets/js/aos.js"></script>
+
+    <!-- script js file -->
+    <script src="~/assets/js/script.js"></script>
+
+    <!-- ecommerce js file -->
+    <script src="~/assets/js/ecommerce.js"></script>
+
+    @*<script src="~/assets/js/filter.js?version=2"></script>*@
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,191 @@
+﻿@model WorkSampleListViewModel
+@{
+    ViewData["Title"] = "نمونه کارها";
+    Layout = "~/Views/Shared/AdminPanel.cshtml";
+}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+            <div>
+                <h1>نمونه کارها</h1>
+                <p class="breadcrumbs">
+                    <span><a href="/Admin">پنل</a></span> <span>
+                        <i class="mdi mdi-chevron-left"></i>
+                    </span>نمونه کارها
+                </p>
+            </div>
+            <div><a href="/Admin/AddWorkSample?Case=Add" class="btn btn-primary">افزودن نمونه کار</a></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default">
+                    <div class="card-header card-header-border-bottom d-flex justify-content-between">
+                        <div class="card-bar">
+                            <div class="col-lg-6 col-md-12 sort">
+                                <div class="col-lg-3 col-md-6 p-space">
+                                    <select class="form-control" id="dropdownCategory">
+                                        <option value="0">همه گروه </option>
+                                        @foreach (var group in Model.groups)
+                                        {
+                                            <option value="@group.id">@group.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-5 col-md-6 p-space">
+                                    <select class="form-control"
+                                            id="dropdownLimit">
+                                        <option value="null">نمایش نمونه کار در هر صفحه</option>
+                                        <option value="20">20</option>
+                                        <option value="50"> 50 </option>
+                                        <option value="100">100</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-md-6 p-space">
+                                    <select class="form-control"
+                                            id="dropdownSortBy">
+                                        <option value="null">مرتب سازی براساس</option>
+                                        <option value="Latest">جدیدترین</option>
+                                        <option value="Oldest"> قدیمی ترین </option>
+                                        <option value="LatestByEdit">تازه ترین ویرایش شده</option>
+                                        <option value="OldestByEdit">قدیمی ترین ویرایش شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var sample in Model.Samples)
+                            {
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="card-wrapper">
+                                        <div class="card-container">
+                                            <div class="card-top">
+                                                <img class="card-image"
+                                                     src="~/assets/images/workSample-image/@sample.Image" style="width:250px;height:250px;" alt="Sample Image">
+                                            </div>
+                                            <div class="card-action">
+                                                <div class="card-edit">
+                                                    <a href="/Admin/AddWorkSample?sampleId=@sample.Id&Case=Edit" title="ویرایش"><i class="mdi mdi-circle-edit-outline"></i></a>
+                                                </div>
+                                                <div class="card-preview">
+                                                    <i class="mdi mdi-eye-outline"></i>
+                                                </div>
+                                                <div class="card-remove">
+                                                    <a href="/Admin/DeleteSample?sampleId=@sample.Id" title="حذف"><i class="mdi mdi mdi-delete-outline"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <nav aria-label="Page navigation example p-0">
+                                @{
+                                    int page = int.Parse(ViewData["page"].ToString());
+                                    int pageCount = int.Parse(ViewData["pagesCount"].ToString());
+                                }
+                                <span id="activePage" style="display:none">@int.Parse(ViewData["page"].ToString())</span>
+                                <span id="pagesCount" style="display:none">@int.Parse(ViewData["pagesCount"].ToString())</span>
+                                <ul class="pagination pagination-seperated pagination-seperated-rounded">
+                                    <li class="page-item">
+                                        <button class="page-link" onclick="previousPage()">
+                                            <span class="mdi mdi-chevron-right ml-1"></span> قبل <span class="sr-only">قبلی</span>
+                                        </button>
+                                    </li>
+                                    @if (pageCount <= 8)
+                                    {
+                                        @for (int i = 1; i <= pageCount; i++)
+                                        {
+                                            if (i == page)
+                                            {
+                                                <li class="page-item active"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                            }
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (page >= 4)
+                                        {
+                                            @for (int i = page - 3; i <= page; i++)
+                                            {
+                                                if (i == page)
+                                                {
+                                                    <li class="page-item active"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            @for (int i = 1; i <= page; i++)
+                                            {
+                                                if (i == page)
+                                                {
+                                                    <li class="page-item active"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                            }
+                                        }
+                                        if (page + 4 <= pageCount)
+                                        {
+                                            @for (int i = page + 1; i <= page + 4; i++)
+                                            {
+                                                if (i == page)
+                                                {
+                                                    <li class="page-item active"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @for (int i = page + 1; i <= pageCount; i++)
+                                            {
+                                                if (i == page)
+                                                {
+                                                    <li class="page-item active"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="page-item"><button class="page-link" onclick="selectPage(this)">@i</button></li>
+                                                }
+                                            }
+                                        }
+                                    }
+                                    @*<li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+                                   
+                                        <li class="page-item">
+                                            <button  class="page-link" onclick="nextPage()">
+                                                بعد <span class="mdi mdi-chevron-left mr-1"></span> <span class="sr-only">بعدی</span>
+                                            </button>
+                                        </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/AdminPanel/assets/js/WorkSampleList.js?version=7"></script>

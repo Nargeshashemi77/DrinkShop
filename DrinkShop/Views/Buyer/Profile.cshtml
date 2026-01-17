@@ -1,0 +1,65 @@
+﻿@model UserProfileViewModel
+@{
+    ViewData["Title"] = "پروفایل کاربر";
+}
+<!-- Breadcrumb Start -->
+@*<div class="bread_crumb shop_bread_crumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 sec_low">
+                <div class="functionalities">
+                    <ul id="breadcrumb" class="breadcrumb">
+                        <li><a title="Home" href="contraction.html"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                        <li><strong><i class="fa fa-angle-double-right" aria-hidden="true"></i> ثبت نام</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="page-title">
+                    <h2>اطلاعات کاربری</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+<!-- Breadcrumb Start -->
+<!-- section start -->
+<section class="login-page  section-b-space cmn_bg_yellow">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @if (ViewData["OrderMessage"].Equals("Order"))
+                {
+                    <h5 style="text-align:center;color:red">برای ثبت سفارش ابتدا اطلاعات خود را کامل کنید</h5>
+                }
+                <h3>اطلاعات کاربری</h3>
+                <div class="theme-card">
+                    <form class="theme-form" asp-controller="Buyer" asp-action="Profile" asp-route-message="@ViewData["OrderMessage"]" asp-route-Url="@ViewData["Url"]" method="post">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="fname">نام</label>
+                                <input asp-for="@Model.user.Name" type="text" class="form-control" id="fname" placeholder="نام" maxlength="50" value="@Model.user.Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lname">نام خانوادگی</label>
+                                <input asp-for="@Model.user.Family" type="text" class="form-control" id="lname" placeholder="نام خانوادگی" maxlength="100" value="@Model.user.Family" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="phone">شماره تماس</label>
+                                <input asp-for="@Model.user.PhoneNumber" type="text" class="form-control" id="phone" placeholder="شماره تماس" value="@Model.user.PhoneNumber" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="review">آدرس</label>
+                                <input asp-for="@Model.user.Address" type="text" class="form-control" id="review" placeholder="آدرس" maxlength="500" value="@Model.user.Address" required>
+                            </div>
+                        </div>
+                        <div class="text-danger" style="color:red;text-align:right" asp-validation-summary="ModelOnly"></div><br />
+                        <button class="btn btn-solid" type="submit">ثبت</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1307,15 +1307,15 @@ $(document).ready(function() {
       type: "line",
       // The data for our dataset
       data: {
-          labels:@Html.Raw(XLabels), //[
-          //"4 فروردین",
-          //"5 فروردین",
-          //"6 فروردین",
-          //"7 فروردین",
-          //"8 فروردین",
-          //"9 فروردین",
-          //"10 فروردین"
-        //],
+        labels: [
+          "4 فروردین",
+          "5 فروردین",
+          "6 فروردین",
+          "7 فروردین",
+          "8 فروردین",
+          "9 فروردین",
+          "10 فروردین"
+        ],
         datasets: [
           {
             label: "فعال",
@@ -1404,17 +1404,17 @@ $(document).ready(function() {
       }
     };
 
-    //var ctx = document.getElementById("activity").getContext("2d");
-    //var myLine = new Chart(ctx, config);
+    var ctx = document.getElementById("activity").getContext("2d");
+    var myLine = new Chart(ctx, config);
 
-    //var items = document.querySelectorAll("#user-activity .nav-tabs .nav-item");
-    //items.forEach(function(item, index){
-    //  item.addEventListener("click", function() {
-    //    config.data.datasets[0].data = activityData[index].first;
-    //    config.data.datasets[1].data = activityData[index].second;
-    //    myLine.update();
-    //  });
-    //});
+    var items = document.querySelectorAll("#user-activity .nav-tabs .nav-item");
+    items.forEach(function(item, index){
+      item.addEventListener("click", function() {
+        config.data.datasets[0].data = activityData[index].first;
+        config.data.datasets[1].data = activityData[index].second;
+        myLine.update();
+      });
+    });
   }
 
   /*======== 17. HORIZONTAL BAR CHART1 ========*/

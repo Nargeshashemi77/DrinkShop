@@ -1,203 +1,184 @@
 ﻿@using DrinkShop.Convertor
-@using DrinkShop.Models.Entities
+@using DrinkShop.Models
 @model List<Product>
-@{
-    ViewData["Title"] = "محصولات";
-}
-@{
-    ulong ShowReadablePrice;
-}
-<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="row ec_breadcrumb_inner">
-                    <div class="col-md-6 col-sm-12">
-                        <h2 class="ec-breadcrumb-title">محصولات</h2>
+
+<section class="section-b-space cmn_bg_yellow shop_page">
+
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+    @if (Model.Count != 0)
+    {
+        <div class="collection-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3 collection-filter">
+                        <!-- side-bar colleps block stat -->
+                        <div class="collection-filter-block sidebar">
+                            <!-- brand filter start -->
+                            <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> بازگشت</span></div>
+                            <div class="collection-collapse-block open">
+                                <h3 class="collapse-block-title">فیلتر</h3>
+                                <div class="collection-collapse-block-content">
+                                    <div class="collection-brand-filter">
+                                        <div class="custom-control custom-checkbox collection-filter-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="filterCheckbox">
+                                            <label class="custom-control-label" for="filterCheckbox">موجود</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- side-bar banner end here -->
                     </div>
-                    <div class="col-md-6 col-sm-12">
+                    <div class="collection-content col">
+                        <div class="page-main-content">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="collection-product-wrapper">
+                                        <div class="product-top-filter">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div class="filter-main-btn"><span class="filter-btn btn btn-theme"><i class="fa fa-filter" aria-hidden="true"></i> فیلتر</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="product-filter-content">
+                                                        <div class="product-page-per-view">
+                                                            <select id="SelectLimitOfPage">
+                                                                <option value="9">9 محصول در هر صفحه</option>
+                                                                <option value="21">21 محصول در هر صفحه</option>
+                                                                <option value="33">33 محصول در هر صفحه</option>
+                                                                <option value="42">42 محصول در هر صفحه</option>
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="product-page-filter">
+                                                            <select id="SortProduct">
+                                                                <option value="null" selected>مرتب سازی</option>
+                                                                <option value="Newest">جدیدترین</option>
+                                                                <option value="Oldest"> قدیمی ترین</option>
+                                                                <option value="AlphabetAscending">نام، الف تا ی</option>
+                                                                <option value="AlphabetDescending">نام، ی تا الف</option>
+                                                                <option value="CheapToExpensive">قیمت، کم به زیاد</option>
+                                                                <option value="ExpensiveToCheap">قیمت، زیاد به کم</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-wrapper-grid">
+                                            <div class="row">
+                                                @foreach (var product in Model)
+                                                {
+                                                    <div class="col-md-4 col-6 col-grid-box">
+                                                        <div class="product-box" data-aos="zoom-out">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="/Product/ProductDetails?productId=@(product.id)"><img style="width:255px;height:350px" src="~/assets/images/product-image/@(product.productImage)" class="img-fluid" alt="productImage"></a>
+                                                                    <div>
+                                                                        <a href="/Product/ProductDetails?productId=@(product.id)" class="add_hover add_search" title="جزییات"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                                                        <a href="#" title="لیست علاقه مندی" class="add_hover add_wish"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                                                        <a href="#" title="سبد خرید" class="add_hover"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div>
+                                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div><h6>@product.Name</h6>
+                                                                    <p>@product.Description</p>
+                                                                    <h5>
+                                                                        قیمت : <span>
+                                                                            هر @product.Unit
+                                                                            @{
+                                                                                ulong ShowReadablePrice = (ulong)product.Price;
+                                                                            }
+                                                                            @ShowReadablePrice.ToMoreReadable() تومان
+                                                                        </span>
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        @{
+                                            int page = int.Parse(ViewData["page"].ToString());
+                                            int pageCount = int.Parse(ViewData["pagesCount"].ToString());
+                                        }
+                                        <span id="activePage" style="display:none">@int.Parse(ViewData["page"].ToString())</span>
+                                        <span id="pagesCount" style="display:none">@int.Parse(ViewData["pagesCount"].ToString())</span>
+                                        <div class="pagination_sec">
+                                            <div id="pagesContainer" class="content_detail__pagination cdp">
+                                                @if (page != 1)
+                                                {
+                                                    <button style="cursor:pointer;" onclick="previousPage()" class="cdp_i"><i class="fa fa-angle-double-left" aria-hidden="true"></i>قبلی</button>
+                                                }
+                                                @if (pageCount <= 8)
+                                                {
+                                                    @for (int i = 1; i <= pageCount; i++)
+                                                    {
+                                                        <a class="cdp_i">@i</a>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (page >= 4)
+                                                    {
+                                                        @for (int i = page - 3; i <= page; i++)
+                                                        {
+                                                            <a class="cdp_i">@i</a>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @for (int i = 1; i <= page; i++)
+                                                        {
+                                                            <a class="cdp_i">@i</a>
+                                                        }
+                                                    }
+                                                    if (page + 4 <= pageCount)
+                                                    {
+                                                        @for (int i = page + 1; i <= page + 4; i++)
+                                                        {
+                                                            <a class="cdp_i">@i</a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @for (int i = page + 1; i <= pageCount; i++)
+                                                        {
+                                                            <a class="cdp_i">@i</a>
+                                                        }
+                                                    }
+                                                }
+                                                @if (page != pageCount)
+                                                {
+                                                    <button style="cursor:pointer;" onclick="nextpage()" class="cdp_i">بعدی<i style="cursor:pointer;" class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                                                }
+                                            </div>
+                                        </div>
+                                        <!-- pagination End -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<section class="ec-page-content section-space-p product_page shop_page">
-    <div class="container">
-        <div class="row">
-            <div class="ec-shop-rightside col-lg-9 col-md-12 order-lg-last order-md-first margin-b-30">
-                @if (Model.Count != 0)
-                {
-                    <!-- Shop Top Start -->
-                    <div class="ec-pro-list-top d-flex">
-                        <div class="col-md-6 ec-grid-list">
-                            <div class="ec-gl-btn">
-                                <button class="btn btn-grid active"><img src="~/assets/images/icons/grid.svg" class="svg_img gl_svg" alt=""></button>
-                                <button class="btn btn-list"><img src="~/assets/images/icons/list.svg" class="svg_img gl_svg" alt=""></button>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ec-sort-select">
-
-                            <a><button type="submit"><img src="~/assets/images/icons/filter.svg" class="svg_img pro_svg" alt="اعمال فیلتر"></button></a>&nbsp
-                            <span class="sort-by">چینش بر اساس</span>
-                            <div class="ec-select-inner">
-
-                                <select id="Filter" name="Filter">
-                                    <option value="null" selected>-</option>
-                                    <option value="Newest">جدیدترین</option>
-                                    <option value="Oldest"> قدیمی ترین</option>
-                                    <option value="AlphabetAscending">نام، الف تا ی</option>
-                                    <option value="AlphabetDescending">نام، ی تا الف</option>
-                                    <option value="CheapToExpensive">قیمت، کم به زیاد</option>
-                                    <option value="ExpensiveToCheap">قیمت، زیاد به کم</option>
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Shop Top End -->
-                    <!-- Shop content Start -->
-                    <div class="shop-pro-content">
-                        <div class="shop-pro-inner">
-                            <div class="row">
-                                @foreach (var product in Model)
-                                {
-                                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                                        <div class="ec-product-inner">
-                                            <div class="ec-pro-image-outer">
-                                                <div class="ec-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
-                                                        <img style="width:231px;height:257px" class="main-image" src="~/assets/images/product-image/@(product.productImage)">
-                                                    </a>
-
-                                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.id" class="quickview" title="مشاهده محصول"><img src="~/assets/images/icons/quickview.svg" class="svg_img pro_svg" alt="Watch"></a>
-                                                    <div class="ec-pro-actions">
-                                                        <a class="ec-btn-group compare" title=""><img src="~/assets/images/icons/compare.svg" class="svg_img pro_svg" alt=""></a>
-                                                        @if (product.Stock > 0)
-                                                        {
-                                                            <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.id" title="خرید" class="add-to-cart"><img src="~/assets/images/icons/cart.svg" class="svg_img pro_svg" alt="BuySvg"></a>
-                                                        }
-                                                        <a href="/Buyer/AddItemToFavorites?itemId=@product.id" class="ec-btn-group wishlist" title=" افزودن به علاقه مندی"><img src="~/assets/images/icons/wishlist.svg" class="svg_img pro_svg" alt=""></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ec-pro-content">
-                                                <h5 class="ec-pro-title"><a href="#"> @product.Name </a></h5>
-                                                <div class="ec-pro-rating">
-                                                    <i class="ecicon eci-star fill"></i>
-                                                    <i class="ecicon eci-star fill"></i>
-                                                    <i class="ecicon eci-star fill"></i>
-                                                    <i class="ecicon eci-star fill"></i>
-                                                    <i class="ecicon eci-star fill"></i>
-                                                </div>
-                                                <div class="ec-pro-list-desc"> @product.Description </div>
-                                                <span class="new-price">
-                                                    @{
-                                                        ShowReadablePrice = (ulong)product.Price;
-                                                    }
-                                                    @ShowReadablePrice.ToMoreReadable() تومان
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                }
-                            </div>
-                        </div>
-                        <!-- Ec Pagination Start -->
-                        <div class="ec-pro-pagination">
-                            <span>&nbsp</span>
-
-                            @{
-                                int page = int.Parse(ViewData["page"].ToString());
-                                int pageCount = int.Parse(ViewData["pagesCount"].ToString());
-                            }
-                            <span id="activePage" style="display:none">@int.Parse(ViewData["page"].ToString());</span>
-                            <span id="pagesCount" style="display:none">@int.Parse(ViewData["pagesCount"].ToString());</span>
-                            <ul id="pagesContainer" class="ec-pro-pagination-inner">
-                                @if (page != 1)
-                                {
-                                    <li><a class="next" onclick="previousPage()"><i class="ecicon eci-angle-right"></i>&nbspقبلی </a></li>
-                                }
-                                @if (pageCount <= 8)
-                                {
-                                    @for (int i = 1; i <= pageCount; i++)
-                                    {
-                                        if (i == page)
-                                        {
-                                            <li><a class="active">@i</a></li>
-                                        }
-                                        else
-                                        {
-                                            <li><a>@i</a></li>
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (page >= 4)
-                                    {
-                                        @for (int i = page - 3; i <= page; i++)
-                                        {
-                                            if (i == page)
-                                            {
-                                                <li><a class="active">@i</a></li>
-                                            }
-                                            else
-                                            {
-                                                <li><a>@i</a></li>
-                                            }
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        @for (int i = 1; i <= page; i++)
-                                        {
-                                            if (i == page)
-                                            {
-                                                <li><a class="active">@i</a></li>
-                                            }
-                                            else
-                                            {
-                                                <li><a>@i</a></li>
-                                            }
-                                        }
-                                    }
-                                    if (page + 4 <= pageCount)
-                                    {
-                                        @for (int i = page + 1; i <= page + 4; i++)
-                                        {
-                                            <li><a>@i</a></li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        @for (int i = page + 1; i <= pageCount; i++)
-                                        {
-                                            <li><a>@i</a></li>
-                                        }
-                                    }
-                                }
-                                @if (page != pageCount)
-                                {
-                                    <li><a class="next" onclick="nextpage()">بعدی<i class="ecicon eci-angle-left"></i></a></li>
-                                }
-                            </ul>
-                        </div>
-                        <!-- Ec Pagination End -->
-                    </div>
-                    <!--Shop content End -->
-                }
-                else
-                {
-                    <h5 style="text-align:center">محصولی یافت نشد</h5>
-                }
-            </div>
-            @await Component.InvokeAsync("ShowGroups","Sidebar")
-        </div>
-    </div>
+    }
+    else
+    {
+        <h4 style="text-align:center;">محصولی وجود ندارد</h4>
+    }
 </section>
-<script src="~/assets/js/plugins/pagination.js?version=3"></script>
-<script src="~/assets/js/plugins/filter.js?version=2"></script>
+<script src="~/assets/js/pagination.js?version=7"></script>
+<script src="~/assets/js/sortProducts.js?version=4"></script>

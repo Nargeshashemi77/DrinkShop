@@ -1,8 +1,8 @@
-﻿using DrinkShop.Models.Entities;
+﻿using DrinkShop.Models;
 
 namespace DrinkShop.Shared
 {
-    public static class filter
+    public static class Filter
     {
         public static List<Product> sorted_Products(IQueryable<Product> products, string sort, int skip, int limit)
         {

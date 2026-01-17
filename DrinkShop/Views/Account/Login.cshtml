@@ -1,0 +1,83 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "ورود";
+}
+<!-- section start -->
+<section class="login-page section-b-space cmn_bg_yellow">
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+    @if (ViewData["Message"] != null)
+    {
+        @if (ViewData["Message"].Equals("Success"))
+        {
+
+            <h5 style="color:green;text-align:center;">ثبت نام موفقیت آمیز بود لطفا وارد شوید</h5>
+            <br />
+        }
+        else
+        {
+
+            <h5 style="color:red;text-align:center;"> لطفا ابتدا وارد سایت شوید</h5>
+            <br />
+
+        }
+    }
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>ورود</h3>
+                <div class="theme-card">
+                    <form asp-action="Login" asp-controller="Account" asp-route-message="@ViewData["Message"]" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                        <div class="form-group">
+                            <label for="email">ایمیل</label>
+                            <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل را وارد کنید" required>
+                            <br /><span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="review">رمزعبور</label>
+                            <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="رمزعبور را وارد کنید" required><br />
+                            <input id="PasswordCheck" type="checkbox" /> نمایش رمز <br />
+                            <br /><span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div><br />
+                        @if (ViewData["ErrorMessage"] != null)
+                        {
+                            <div class="text-danger">@ViewData["ErrorMessage"]</div>
+                            <br />
+                        }
+                        <button class="btn btn-solid" id="mc-submitsa" type="submit">ورود</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 right-login">
+                <h3>مشتری جدید</h3>
+                <div class="theme-card authentication-right">
+                    <h6 class="title-font">ایجاد یک حساب کاربری</h6>
+                    <p>ثبت نام برای یک حساب کاربری رایگان در فروشگاه ما. ثبت نام سریع و آسان است. این امکان را به شما می دهد تا بتوانید از فروشگاه ما سفارش دهید. برای شروع خرید ، روی ثبت نام کلیک کنید.</p>
+                    <button class="btn btn-solid" id="RegisterBtn">ایجاد یک حساب کاربری</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("RegisterBtn").addEventListener("click", () => {
+            window.location.href = "http://localhost:5292/Account/Register"
+        })
+        const PasswordCheckElement = document.getElementById("PasswordCheck");
+        const PasswordInputElement = document.getElementById("Password");
+        PasswordCheckElement.addEventListener("click", () => {
+            if (PasswordCheckElement.checked)
+                PasswordInputElement.type = "text";
+            else
+                PasswordInputElement.type = "password";
+        });
+    </script>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>
+<!-- section End -->

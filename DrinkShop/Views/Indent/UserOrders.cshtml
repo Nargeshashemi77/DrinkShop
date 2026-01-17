@@ -1,0 +1,160 @@
+﻿@model List<UserOrderViewModel>
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+@{
+    ulong ShowReadablePrice;
+}
+<!--section start-->
+<section class="cart-section section-b-space cmn_bg_yellow">
+
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                @if (Model.Count != 0)
+                {
+                    <table class="table cart-table table-responsive-sm" id="userOrdersTable">
+                        <thead>
+                            <tr class="table-head">
+                                <th>شماره سفارش</th>
+                                <th scope="col">شناسه محصول</th>
+                                <th scope="col">تصویر محصول</th>
+                                <th scope="col">نام محصول</th>
+                                <th scope="col">قیمت محصول</th>
+                                <th scope="col">رنگ</th>
+                                <th scope="col">جنس</th>
+                                <th scope="col">توضیحات</th>
+                                <th scope="col">تاریخ</th>
+                                <th scope="col">زمان</th>
+                                <th scope="col">وضعیت</th>
+                                <th scope="col">حذف</th>
+                                <th scope="col">ویرایش</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@item.orderId</td>
+                                    <td>@item.productId</td>
+                                    <td>
+                                        <a href="/Product/ProductDetails?productId=@(item.productId)">
+                                            <img src="~/assets/images/product-image/@(item.productImage)" alt="ProductImage">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span href="#">@item.productName</span>
+                                    </td>
+                                    <td>
+                                        <h4>
+                                            <span>
+                                                @{
+                                                    ShowReadablePrice = (ulong)item.productPrice;
+                                                }
+                                                @ShowReadablePrice.ToMoreReadable()
+                                            </span>تومان
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        @if (item.productColor != null)
+                                        {
+                                            <span>@item.productColor</span>
+                                        }
+                                        else
+                                        {
+                                            <span></span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.productMaterial != null)
+                                        {
+                                            <span>@item.productMaterial</span>
+                                        }
+                                        else
+                                        {
+                                            <span></span>
+                                        }
+                                    </td>
+                                    @if (item.OrderStat == OrderStatus.Pending)
+                                    {
+                                        <td><textarea style="width:200px;" rows="4" maxlength="250">@item.orderDescription</textarea></td>
+
+                                    }
+                                    else
+                                    {
+                                        <td><textarea style="width:200px;" rows="4" readonly>@item.orderDescription</textarea></td>
+                                    }
+                                    <td>@item.registerDateTime.ToShamsi()</td>
+                                    <td>@item.registerDateTime.ToString("HH:mm:ss")</td>
+                                    <td>
+                                        <div style="width:150px">
+                                            @if (item.OrderStat == OrderStatus.Pending)
+                                            {
+                                                <span style="color:gray">در حال بررسی</span>
+                                            }
+                                            else if (item.OrderStat == OrderStatus.reffered)
+                                            {
+                                                <span style="color:green">درخواست شما به سرویس کار ارجاع داده شد. منتظر ارسال سرویس کار بمانید</span>
+                                            }
+                                            else if (item.OrderStat == OrderStatus.canceled)
+                                            {
+                                                <span style="color:red">لغو شده</span>
+                                            }
+                                            else if (item.OrderStat == OrderStatus.finished)
+                                            {
+                                                <span style="color:deepskyblue">سفارش شما توسط سرویس کار انجام پذیرفته است</span>
+                                            }
+                                            else if (item.OrderStat == OrderStatus.doing)
+                                            {
+                                                <span style="color:limegreen">سفارش شما در حال انجام توسط سرویس کار است</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:orange">رد شده</span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (item.OrderStat == OrderStatus.Pending)
+                                        {
+                                            <a href="/Indent/CancelOrder?orderId=@(item.orderId)" class="icon">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span></span>
+                                        }
+                                    </td>
+                                    @if (item.OrderStat == OrderStatus.Pending)
+                                    {
+                                        <td>
+                                            <button onclick="editOrderRequest(@item.orderId)" style="padding:8px 19px" class="theme_btn">
+                                                ویرایش
+                                                <span class="theme_btn_eff"></span>
+                                            </button>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <h6 style="text-align:center;">سفارشی وجود ندارد</h6>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/assets/js/UserOrders.js?version=4"></script>

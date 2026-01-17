@@ -1,0 +1,23 @@
+﻿@model List<GroupAndSubGroupViewModel>
+@{
+    ViewData["Title"] = "ShowGroupsRightOfNavbar";
+}
+@foreach (var group in Model)
+{
+    <div class="col-xl-3 ">
+        <div class="link-section">
+            <div class="menu-title">
+                <h5><a href="/Product/ShowProductByGroupId?groupId=@(group.groupId)">@group.groupName</a></h5>
+            </div>
+
+            <div class="menu-content">
+                @foreach (var subGroup in group.subGroops)
+                {
+                    <ul>
+                        <li><a href="/Product/ShowProductBySubGroupId?subGroupId=@(subGroup.id)">@subGroup.Name</a></li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+}

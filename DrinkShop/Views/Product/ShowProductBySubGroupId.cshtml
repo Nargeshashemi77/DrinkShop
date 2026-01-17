@@ -1,8 +1,6 @@
-﻿@using DrinkShop.Models.Entities
-
-@model List<Product>
+﻿@model List<Product>
 @{
-    ViewData["Title"] = "ShowProductBySubGroupId";
+    ViewData["Title"] = "نمایش محصولات بر اساس زیر گروه";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @await Component.InvokeAsync("ShowProductByGroupComponent",Model)

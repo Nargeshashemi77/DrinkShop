@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "UserOrders";
+    Layout = "~/Views/Shared/AdminPanel.cshtml";
+}
+<form asp-controller="Reports" asp-action="UserCertainOrders" method="post">
+    <div class="col-md-6" style="margin-bottom:10px;margin-right:10px">
+        <label class="form-label">
+            <span>نام کاربری کاربر</span>
+        </label>
+        <input class="form-control" id="OserName" name="Username" type="text" />
+    </div>
+    <div class="col-md-6" style="margin-bottom:10px;margin-right:10px">
+        <label class="form-label">
+            <span>قیمت</span>
+        </label>
+        <input class="form-control" id="OrderPrice" name="OrderPrice" type="number" />
+    </div>
+    <div class="col-md-6" style="margin-bottom:10px;margin-right:10px">
+        <label class="form-label">
+            <span>تاریخ شروع</span>
+        </label>
+        <input class="form-control" id="startDate" name="startDate" type="text" required />
+    </div>
+    <div class="col-md-6" style="margin-bottom:10px;margin-right:10px">
+        <label class="form-label">
+            <span>تاریخ پایان</span>
+        </label>
+        <input class="form-control" id="endDate" name="endDate" type="text" required/>
+    </div>
+    <button type="submit" class="btn btn-primary"> ارسال</button>
+</form>
+

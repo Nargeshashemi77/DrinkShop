@@ -1,9 +1,9 @@
 ﻿@if (ViewData["ForWhere"].Equals("header"))
 {
-    <span class="ec-header-count" style="background-color:red">@ViewData["NumberOfCartItem"]</span>
+    <b class="ec-header-count ec-cart-count">@ViewData["NumberOfCartItem"]</b>
 }
 else
 {
-    <span class="ec-cart-noti ec-header-count cart-count-lable">@ViewData["NumberOfCartItem"]</span>
+    <span class="ec-header-count ec-cart-count">@ViewData["NumberOfCartItem"]</span>
 }
 
