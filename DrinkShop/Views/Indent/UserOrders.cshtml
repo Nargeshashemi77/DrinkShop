@@ -26,9 +26,6 @@
                                 <th scope="col">تصویر محصول</th>
                                 <th scope="col">نام محصول</th>
                                 <th scope="col">قیمت محصول</th>
-                                <th scope="col">رنگ</th>
-                                <th scope="col">جنس</th>
-                                <th scope="col">توضیحات</th>
                                 <th scope="col">تاریخ</th>
                                 <th scope="col">زمان</th>
                                 <th scope="col">وضعیت</th>
@@ -59,26 +56,6 @@
                                                 @ShowReadablePrice.ToMoreReadable()
                                             </span>تومان
                                         </h4>
-                                    </td>
-                                    <td>
-                                        @if (item.productColor != null)
-                                        {
-                                            <span>@item.productColor</span>
-                                        }
-                                        else
-                                        {
-                                            <span></span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (item.productMaterial != null)
-                                        {
-                                            <span>@item.productMaterial</span>
-                                        }
-                                        else
-                                        {
-                                            <span></span>
-                                        }
                                     </td>
                                     @if (item.OrderStat == OrderStatus.Pending)
                                     {

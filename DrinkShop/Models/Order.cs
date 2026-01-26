@@ -8,7 +8,6 @@ namespace DrinkShop.Models
     {
 
         public int Id { get; set; }
-        public string? Description { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public DateTime createdAt { get; set; }
         //Navigation Property

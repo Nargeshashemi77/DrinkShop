@@ -12,8 +12,6 @@ namespace DrinkShop.Models.View_Models
         public string productName { get; set; }
         public string productImage { get; set; }
         public int productPrice { get; set; }
-        public string productColor { get; set; }
-        public string productMaterial { get; set; }
         public DateTime registerDateTime { get; set; }
         public OrderStatus OrderStat { get; set; }
     }

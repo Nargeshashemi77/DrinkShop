@@ -56,15 +56,15 @@
                 <div class="theme-card authentication-right">
                     <h6 class="title-font">ایجاد یک حساب کاربری</h6>
                     <p>ثبت نام برای یک حساب کاربری رایگان در فروشگاه ما. ثبت نام سریع و آسان است. این امکان را به شما می دهد تا بتوانید از فروشگاه ما سفارش دهید. برای شروع خرید ، روی ثبت نام کلیک کنید.</p>
-                    <button class="btn btn-solid" id="RegisterBtn">ایجاد یک حساب کاربری</button>
+                    <button class="btn btn-solid" id="RegisterBtn"
+                            onclick="location.href='@Url.Action("Register", "Account")'">
+                        ایجاد یک حساب کاربری
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        document.getElementById("RegisterBtn").addEventListener("click", () => {
-            window.location.href = "http://localhost:5292/Account/Register"
-        })
         const PasswordCheckElement = document.getElementById("PasswordCheck");
         const PasswordInputElement = document.getElementById("Password");
         PasswordCheckElement.addEventListener("click", () => {
