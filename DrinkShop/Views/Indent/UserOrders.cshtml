@@ -57,15 +57,6 @@
                                             </span>تومان
                                         </h4>
                                     </td>
-                                    @if (item.OrderStat == OrderStatus.Pending)
-                                    {
-                                        <td><textarea style="width:200px;" rows="4" maxlength="250">@item.orderDescription</textarea></td>
-
-                                    }
-                                    else
-                                    {
-                                        <td><textarea style="width:200px;" rows="4" readonly>@item.orderDescription</textarea></td>
-                                    }
                                     <td>@item.registerDateTime.ToShamsi()</td>
                                     <td>@item.registerDateTime.ToString("HH:mm:ss")</td>
                                     <td>

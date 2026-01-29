@@ -78,7 +78,6 @@ namespace DrinkShop.Controllers
                 .Select(o => new OrderViewModel
                 {
                     orderId = o.Id,
-                    orderDescription = o.Description,
                     productId = o.productId,
                     productName = o.product.Name,
                     productImage = o.product.productImage,

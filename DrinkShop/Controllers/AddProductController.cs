@@ -115,11 +115,6 @@ namespace DrinkShop.Controllers
                     ModelState.AddModelError("", "لطفا واحد شمارش محصول را  وارد کنید");
                     return View(addProduct);
                 }
-                if (addProduct.product.Size != null && addProduct.product.UnitOFMeasurement == null)
-                {
-                    ModelState.AddModelError("", "لطفا واحد اندازه گیری را  وارد کنید");
-                    return View(addProduct);
-                }
                 //if (addProduct.product.Stock <= 0)
                 //{
                 //    ModelState.AddModelError("", "موجودی محصول باید بزرگ تر از 0 باشد");

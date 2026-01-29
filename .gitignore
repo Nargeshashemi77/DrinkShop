@@ -380,5 +380,6 @@ FodyWeavers.xsd
 /wwwroot/assets/images/user-image/*.png
 /wwwroot/assets/images/user-image/*.gif
 
+Migrations/
 
 

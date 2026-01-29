@@ -61,42 +61,6 @@ namespace DrinkShop.Controllers
             if (productViewModel == null) { return NotFound(); }
             return View(productViewModel);
         }
-        [HttpGet]
-        public IActionResult WorkSampleList(int groupId = 0, int page = 1)
-        {
-            if (page < 1)
-                return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
-
-            int limit = 4;
-            int skip = (page - 1) * limit;
-            double productCount, result;
-
-            IQueryable<WorkSamples> workSampleList;
-
-            if (groupId == 0)
-            {
-                workSampleList = _context.workSamples;
-                productCount = workSampleList.Count();
-            }
-            else
-            {
-                workSampleList = _context.workSamples.Where(ws => ws.groupId == groupId);
-                productCount = workSampleList.Count();
-            }
-
-            ViewData["page"] = page;
-            result = productCount / (double)limit;
-            int pageCount = (int)Math.Ceiling(result);
-            ViewData["pagesCount"] = pageCount;
-
-            List<Group> groups = _context.groups.ToList();
-            WorkSampleListViewModel workSampleListViewModel = new WorkSampleListViewModel()
-            {
-                groups = groups,
-                Samples = workSampleList.Skip(skip).Take(limit).ToList()
-            };
-            return View(workSampleListViewModel);
-        }
         public IActionResult ContactUs()
         {
             return View();

@@ -57,7 +57,6 @@ namespace DrinkShop.Controllers
                         _context.orders.Add(new Order
                         {
                             productId = product.id,
-                            Description = model.Description,
                             buyerId = buyer.id,
                             createdAt = DateTime.Now
                         });
@@ -85,7 +84,6 @@ namespace DrinkShop.Controllers
                 var Order = await _context.orders.SingleOrDefaultAsync(o => o.Id == order.OrderId);
                 if (Order == null)
                     return NotFound();
-                Order.Description = order.Description;
                 _context.orders.Update(Order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("UserOrders", "Indent");
@@ -110,13 +108,10 @@ namespace DrinkShop.Controllers
                 .Select(o => new UserOrderViewModel
                 {
                     orderId = o.Id,
-                    orderDescription = o.Description,
                     productId = o.productId,
                     productName = o.product.Name,
                     productImage = o.product.productImage,
                     productPrice = o.product.Price,
-                    productColor = o.product.Color,
-                    productMaterial = o.product.Material,
                     registerDateTime = o.createdAt,
                     OrderStat = o.Status
                 }

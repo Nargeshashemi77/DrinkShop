@@ -74,29 +74,6 @@
                                     </span>
                                     تومان
                                 </h3>
-                                @if (SignInManager.IsSignedIn(User))
-                                {
-                                    @if (User.IsInRole("Buyer"))
-                                    {
-                                        <h6>قبل از ثبت سفارش خود در صورت نیاز در بخش توضیحات سفارش توضیحات لازم(همچون متراژ زمین برای پارکت، تعداد دیوار ها و اندازه برای کاغذ دیواری و ...) را ارائه بفرمایید</h6>
-                                        <div class="product-buttons">
-                                            <button id="addToCart-submit-btn" class="theme_btn">
-                                                ثبت سفارش
-                                                <span class="theme_btn_eff"></span>
-                                            </button>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <h6>قبل از ثبت سفارش خود در صورت نیاز در بخش توضیحات سفارش توضیحات لازم(همچون متراژ زمین برای پارکت، تعداد دیوار ها و اندازه برای کاغذ دیواری و ...) را ارائه بفرمایید</h6>
-                                    <div class="product-buttons">
-                                        <button id="addToCart-submit-btn" class="theme_btn">
-                                            ثبت سفارش
-                                            <span class="theme_btn_eff"></span>
-                                        </button>
-                                    </div>
-                                }
                                 @if (Model.Summary != null)
                                 {
                                     <div class="border-product">
@@ -114,9 +91,6 @@
                                             <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                             <li><a href="#"><i class="fa fa-rss"></i></a></li>
                                         </ul>
-                                        @*<form class="d-inline-block">
-                                        <button class="wishlist-btn"><i class="fa fa-heart"></i><span class="title-font">افزودن به علاقه</span></button>
-                                        </form>*@
                                     </div>
                                 </div>
                             </div>
@@ -135,10 +109,6 @@
                                         <div class="material-border"></div>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="profile-top-tab" data-toggle="tab" href="#top-contact" role="tab" aria-selected="false"><i class="icofont icofont-man-in-glasses"></i>توضیحات سفارش</a>
-                                        <div class="material-border"></div>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link" id="review-top-tab" data-toggle="tab" href="#top-review" role="tab" aria-selected="false"><i class="icofont icofont-contacts"></i>ارسال نظر</a>
                                         <div class="material-border"></div>
                                     </li>
@@ -147,56 +117,11 @@
                                     <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
                                         <p>@Model.Description</p>
                                     </div>
-                                    <div class="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                                        <div class="single-product-tables">
-                                            <table>
-                                                <tbody>
-                                                    @if (Model.Color != null)
-                                                    {
-                                                        <tr>
-                                                            <td>رنگ : </td>
-                                                            <td>@Model.Color</td>
-                                                        </tr>
-                                                    }
-                                                    @if (Model.Material != null)
-                                                    {
-                                                        <tr>
-                                                            <td>جنس : </td>
-                                                            <td>@Model.Material</td>
-                                                        </tr>
-                                                    }
-                                                    @if (Model.Size != null)
-                                                    {
-                                                        <tr>
-                                                            <td>ابعاد : </td>
-                                                            <td>
-                                                                <span>هر @Model.Unit</span>
-                                                                <span>@Model.Size</span>
-                                                                <span>@Model.UnitOFMeasurement</span>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="top-contact" role="tabpanel" aria-labelledby="contact-top-tab">
-                                        <div class="col-md-12">
-                                            <h5>توضیحات سفارش : </h5>
-                                            <textarea class="form-control" placeholder="توضیحات سفارش خود را اینجا بنویسید" id="OrderDescription" rows="4" maxlength="300"></textarea>
-                                        </div>
-                                    </div>
                                     <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
                                         <form class="theme-form" asp-controller="Comment" asp-action="addComment" asp-route-productId="@Model.id" asp-route-userName="@User.Identity.Name" method="post">
                                             <div class="ec-ratting-input form-submit">
                                                 <div class="form-row">
                                                     <div class="col-md-12">
-                                                        @*<div class="media">
-                                                        <label>امتیاز</label>
-                                                        <div class="media-body ml-3">
-                                                        <div class="rating three-star comment_rate"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div>
-                                                        </div>
-                                                        </div>*@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <h5>متن نظر: </h5>
