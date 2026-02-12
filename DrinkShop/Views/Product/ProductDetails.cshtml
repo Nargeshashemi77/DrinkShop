@@ -74,6 +74,27 @@
                                     </span>
                                     تومان
                                 </h3>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    @if (User.IsInRole("Buyer"))
+                                    {
+                                        <div class="product-buttons">
+                                            <button id="addToCart-submit-btn" class="theme_btn">
+                                                ثبت سفارش
+                                                <span class="theme_btn_eff"></span>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="product-buttons">
+                                        <button id="addToCart-submit-btn" class="theme_btn">
+                                            ثبت سفارش
+                                            <span class="theme_btn_eff"></span>
+                                        </button>
+                                    </div>
+                                }
                                 @if (Model.Summary != null)
                                 {
                                     <div class="border-product">
@@ -181,4 +202,4 @@
         </div>
     </div>
 </section>
-<script src="~/assets/js/AddOrder.js?version=6"></script>
+<script src="~/assets/js/AddOrder.js?version=7"></script>

@@ -31,11 +31,9 @@
             }
             else {
                 const productIdElement = document.getElementById("productIdSection");
-                const OrderDescription = document.getElementById("OrderDescription").value;
-                console.log("Order Description: ", OrderDescription);
+               
                 const requestBody = {
                     productId: productIdElement.innerText,
-                    Description: OrderDescription
                 }
                 console.log("Request Body: ", requestBody);
                 const response = await fetch("/Indent/AddOrder", {
