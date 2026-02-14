@@ -58,6 +58,7 @@ namespace DrinkShop.Controllers
                         {
                             productId = product.id,
                             buyerId = buyer.id,
+                            Number = model.number,
                             createdAt = DateTime.Now
                         });
                     }
@@ -84,6 +85,9 @@ namespace DrinkShop.Controllers
                 var Order = await _context.orders.SingleOrDefaultAsync(o => o.Id == order.OrderId);
                 if (Order == null)
                     return NotFound();
+
+                Order.Number = order.number;
+
                 _context.orders.Update(Order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("UserOrders", "Indent");
@@ -112,6 +116,7 @@ namespace DrinkShop.Controllers
                     productName = o.product.Name,
                     productImage = o.product.productImage,
                     productPrice = o.product.Price,
+                    number = o.Number,
                     registerDateTime = o.createdAt,
                     OrderStat = o.Status
                 }

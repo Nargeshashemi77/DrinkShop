@@ -79,20 +79,26 @@
                                     @if (User.IsInRole("Buyer"))
                                     {
                                         <div class="product-buttons">
-                                            <button id="addToCart-submit-btn" class="theme_btn">
-                                                ثبت سفارش
-                                                <span class="theme_btn_eff"></span>
-                                            </button>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="number" id="number" value="1" class="form-control input-number" style="width: 70px; margin-left: 10px;">
+                                                <button id="addToCart-submit-btn" class="theme_btn">
+                                                    افزودن به سبد خرید
+                                                    <span class="theme_btn_eff"></span>
+                                                </button>
+                                            </div>
                                         </div>
                                     }
                                 }
                                 else
                                 {
                                     <div class="product-buttons">
-                                        <button id="addToCart-submit-btn" class="theme_btn">
-                                            ثبت سفارش
-                                            <span class="theme_btn_eff"></span>
-                                        </button>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input type="number" id="number" value="1" class="form-control input-number" style="width: 70px; margin-left: 10px;">
+                                            <button id="addToCart-submit-btn" class="theme_btn">
+                                                افزودن به سبد خرید
+                                                <span class="theme_btn_eff"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 }
                                 @if (Model.Summary != null)
@@ -202,4 +208,4 @@
         </div>
     </div>
 </section>
-<script src="~/assets/js/AddOrder.js?version=7"></script>
+<script src="~/assets/js/AddOrder.js?version=8"></script>

@@ -5,6 +5,6 @@
 
         public int OrderId { get; set; }
 
-        public string Description { get; set; }
+        public int number { get; set; }
     }
 }
