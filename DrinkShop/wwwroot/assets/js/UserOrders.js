@@ -1,13 +1,13 @@
 ﻿{
     function editOrderRequest(orderId) {
-        const numberInput = document.getElementById(`orderNumber`);
+        const numberInput = document.getElementById(`orderNumber_${orderId}`);
 
         if (!numberInput) {
             console.error(`فیلد تعداد برای سفارش ${orderId} یافت نشد`);
             return;
         }
 
-        const orderNumber = numberInput.innerText;
+        const orderNumber = numberInput.value;
 
         fetch("/Indent/EditOrder", {
             method: "POST",
