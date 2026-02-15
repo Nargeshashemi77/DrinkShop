@@ -111,9 +111,15 @@
                                             </label>
                                             <input asp-for="@Model.product.Price" class="form-control" id="price" type="number" max="1000000000" value="@(Model.product.Price)" />
                                         </div>
+                                        <div class="col-md-6" style="margin-bottom:10px">
+                                            <label class="form-label">
+                                                تخفیف <span> (تومان)</span>
+                                            </label>
+                                            <input asp-for="@Model.product.Discount" class="form-control" id="price" type="number" max="1000000000" value="@(Model.product.Discount)" />
+                                        </div>
                                         <div class="col-md-6" style="margin-top:20px;margin-bottom:10px;">
                                             <label class="form-label">موجودی</label>
-                                            <input asp-for="@Model.product.Stock" type="checkbox" checked="@Model.product.Stock" />
+                                            <input asp-for="@Model.product.Stock" type="number" value="@Model.product.Stock" />
                                         </div>
 
                                         <input asp-for="@Model.product.registerDate" type="hidden" />

@@ -155,9 +155,9 @@
                             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Buyer"))
                             {
                                 <div class="cart-box">
-                                    <a href="/Indent/UserOrders"><i class="ti-shopping-cart-full"></i></a>
+                                    <a href="/carts/getAll"><i class="ti-shopping-cart-full"></i></a>
                                     <div class="logo_content">
-                                        <h5 class="title">سفارشات جاری</h5>
+                                        <h5 class="title">سبد خرید</h5>
                                         <span>@await Component.InvokeAsync("numberOFUserCartItemComponent","header") عدد</span>
                                     </div>
                                 </div>

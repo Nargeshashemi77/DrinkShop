@@ -14,8 +14,9 @@ namespace DrinkShop.Models
         public string? Description { get; set; }
         public string? Summary { get; set; }
         public int Price { get; set; }
+        public int Discount { get; set; }
         public string Unit { get; set; }
-        public bool Stock { get; set; }
+        public int Stock { get; set; }
         public DateTime registerDate { get; set; }
         public bool IsDelete { get; set; }
         public int? groupId { get; set; }

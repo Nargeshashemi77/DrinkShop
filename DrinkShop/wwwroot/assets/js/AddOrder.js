@@ -32,13 +32,12 @@
             else {
                 const productIdElement = document.getElementById("productIdSection");
                 const OrderNumber = document.getElementById("number").value;
-                console.log("Order Description: ", OrderNumber);
                 const requestBody = {
                     productId: productIdElement.innerText,
                     number: OrderNumber
                 }
                 console.log("Request Body: ", requestBody);
-                const response = await fetch("/Indent/AddOrder", {
+                const response = await fetch("/Carts/items", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -110,7 +109,7 @@
                         messageBoxText.innerText = "محصول با موفقیت به سفارشات شما افزوده شد. در حال انتقال به صفحه لیست سفارشات ...";
                         showMessage();
                         setTimeout(() => {
-                            window.location.replace("/Indent/UserOrders");
+                            window.location.replace("/cart/userCart");
                         }, 4000)
                     }
                 }

@@ -9,13 +9,12 @@
 
         const orderNumber = numberInput.value;
 
-        fetch("/Indent/EditOrder", {
-            method: "POST",
+        fetch(`/carts/items/${orderId}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                OrderId: orderId,
                 number: orderNumber
             })
         });

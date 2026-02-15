@@ -1,5 +1,7 @@
 ﻿using DrinkShop.Data;
 using DrinkShop.Models;
+using DrinkShop.Models;
+using DrinkShop.Models.InputQuery;
 using DrinkShop.Models.View_Models;
 using DrinkShop.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -15,53 +17,51 @@ namespace DrinkShop.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(int page = 1, int limit = 9, string sort = null, string search = null, string filter = null)
-        {
-            if (page < 1)
-                return BadRequest(new { StatusCode = 400, message = "page number should be greater than 0" });
-            if (limit < 1)
-                return BadRequest(new { StatusCode = 400, message = "limit should be greater than 0" });
-            int skip = (page - 1) * limit;
-            double productCount, result;
+		public IActionResult Index([FromQuery] GetProductInputQuery query)
+		{
+			try
+			{
+				if (query.page < 1)
+					return BadRequest(new { StatusCode = 400, message = "Page number should be greater than 0" });
 
+				if (query.limit < 1)
+					return BadRequest(new { StatusCode = 400, message = "Limit should be greater than 0" });
 
-            IQueryable<Product> products;
-            if (search != null && filter == "available")
-            {
-                products = _context.products.Where(p => p.Name.Contains(search) && p.Stock == true);
-                productCount = (double)_context.products.Where(p => p.Name.Contains(search) && p.Stock == true).Count();
-            }
-            else if (search != null && filter == null)
-            {
-                products = _context.products.Where(p => p.Name.Contains(search));
-                productCount = (double)_context.products.Where(p => p.Name.Contains(search)).Count();
-            }
-            else if (search == null && filter != null)
-            {
-                products = _context.products.Where(p => p.Stock == true);
-                productCount = (double)_context.products.Where(p => p.Stock == true).Count();
-            }
-            else
-            {
-                products = _context.products;
-                productCount = (double)_context.products.Count();
-            }
+				int skip = (query.page - 1) * query.limit;
 
-            ViewData["page"] = page;
-            result = productCount / (double)limit;
-            int pageCount = (int)Math.Ceiling(result);
-            ViewData["pagesCount"] = pageCount;
+				IQueryable<Product> products = _context.products.AsQueryable();
 
-            List<Product> productViewModel;
-            if (sort != null)
-                productViewModel = Filter.sorted_Products(products, sort, skip, limit);
-            else
-                productViewModel = products.Skip(skip).Take(limit).ToList();
+				if (!string.IsNullOrEmpty(query.search))
+					products = products.Where(p => p.Name.Contains(query.search));
 
-            if (productViewModel == null) { return NotFound(); }
-            return View(productViewModel);
-        }
-        public IActionResult ContactUs()
+				if (!string.IsNullOrEmpty(query.filter) && query.filter.ToLower() == "available")
+					products = products.Where(p => p.Stock > 0);
+
+				int totalCount = products.Count();
+				int totalPages = (int)Math.Ceiling((double)totalCount / query.limit);
+
+				if (!string.IsNullOrEmpty(query.sort))
+					products = Filter.ApplySort(products, query.sort);
+
+				var productList = products.Skip(skip).Take(query.limit).ToList();
+
+				var viewModel = new ProductPageViewModel
+				{
+					Products = productList,
+					CurrentPage = query.page,
+					TotalPages = totalPages,
+					Limit = query.limit
+				};
+
+				return View(viewModel);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Caught Error: {e.Message}");
+				return StatusCode(500);
+			}
+		}
+		public IActionResult ContactUs()
         {
             return View();
         }

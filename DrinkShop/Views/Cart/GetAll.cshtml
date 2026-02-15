@@ -1,0 +1,88 @@
+﻿@model List<CartResultViewModel>
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+@{
+    ulong ShowReadablePrice;
+}
+<!--section start-->
+<section class="cart-section section-b-space cmn_bg_yellow">
+
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                @if (Model.Count != 0)
+                {
+                    <table class="table cart-table table-responsive-sm">
+                        <thead>
+                            <tr class="table-head">
+                                <th scope="col">شناسه محصول</th>
+                                <th scope="col">تصویر </th>
+                                <th scope="col">نام </th>
+                                <th scope="col">قیمت </th>
+                                <th scope="col">تعداد</th>
+                                <th scope="col">حذف</th>
+                                <th scope="col">ویرایش</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@item.ProductId</td>
+                                    <td>
+                                        <a href="/Product/ProductDetails?productId=@(item.ProductId)">
+                                            <img src="~/assets/images/product-image/@(item.ProductImage)" alt="ProductImage">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span href="#">@item.ProductName</span>
+                                    </td>
+                                    <td>
+                                        <h4>
+                                            <span>
+                                                @{
+                                                    ShowReadablePrice = (ulong)item.UnitPrice;
+                                                }
+                                                @ShowReadablePrice.ToMoreReadable()
+                                            </span>تومان
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <div class="qty-box">
+                                            <input type="number" id="orderNumber_@item.CartId" class="form-control input-number" value="@item.Quantity"><div class="input-group">
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <a href="/carts/items/itemId=@(item.CartId)" class="icon">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+
+                                    </td>
+                                    <td>
+                                        <button onclick="editOrderRequest(@item.CartId)" style="padding:8px 19px" class="theme_btn">
+                                            ویرایش
+                                            <span class="theme_btn_eff"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <h6 style="text-align:center;">آیتمی وجود ندارد</h6>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/assets/js/UserOrders.js?version=5"></script>

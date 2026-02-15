@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using DrinkShop.Data;
 using Microsoft.AspNetCore.Identity;
 using DrinkShop.Shared;
+using DrinkShop.Models;
 
 namespace DrinkShop.Controllers
 {

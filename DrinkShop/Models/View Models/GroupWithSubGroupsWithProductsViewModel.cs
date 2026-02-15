@@ -1,4 +1,6 @@
-﻿namespace DrinkShop.Models.View_Models
+﻿using DrinkShop.Models;
+
+namespace DrinkShop.Models.View_Models
 {
     public class GroupWithSubGroupsWithProductsViewModel
     {

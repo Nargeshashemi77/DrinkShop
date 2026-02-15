@@ -1,7 +1,8 @@
 ﻿using DrinkShop.Data;
 using DrinkShop.Enum;
-using DrinkShop.Models;
 using DrinkShop.Models.ApiModel;
+using DrinkShop.Models.ApiModel.Cart;
+using DrinkShop.Models;
 using DrinkShop.Models.View_Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,56 +28,56 @@ namespace DrinkShop.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody] AddToOrder model)
-        {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                if (user == null) { return NotFound(); }
+        //[HttpPost]
+        //public async Task<IActionResult> AddOrder([FromBody] AddInputQuery model)
+        //{
+        //    try
+        //    {
+        //        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        //        if (user == null) { return NotFound(); }
 
-                if (user.Address == null || user.PhoneNumber == null || user.Name == null || user.Family == null)
-                {
-                    string url = Url.Action("ProductDetails", "Product", new { productId = model.productId });
-                    return Ok(new { message = "Should complete user information first", url = $"/Buyer/Profile?message=Order&Url={url}" });
-                }
-                var buyer = await _context.buyers.SingleOrDefaultAsync(b => b.userId == user.Id);
-                if (buyer == null) { return NotFound(); }
+        //        if (user.Address == null || user.PhoneNumber == null || user.Name == null || user.Family == null)
+        //        {
+        //            string url = Url.Action("ProductDetails", "Product", new { productId = model.productId });
+        //            return Ok(new { message = "Should complete user information first", url = $"/Buyer/Profile?message=Order&Url={url}" });
+        //        }
+        //        var buyer = await _context.buyers.SingleOrDefaultAsync(b => b.userId == user.Id);
+        //        if (buyer == null) { return NotFound(); }
 
-                var product = await _context.products.SingleOrDefaultAsync(p => p.id == model.productId);
-                if (product == null) { return NotFound(); }
+        //        var product = await _context.products.SingleOrDefaultAsync(p => p.id == model.productId);
+        //        if (product == null) { return NotFound(); }
 
-                if (product.Stock)
-                {
-                    var cartItem = await _context.orders.Where(o => o.productId == product.id && o.buyerId == buyer.id && (o.Status == OrderStatus.Pending || o.Status == OrderStatus.reffered || o.Status == OrderStatus.doing)).SingleOrDefaultAsync();
-                    #region Validation
+        //        if (product.Stock)
+        //        {
+        //            var cartItem = await _context.orders.Where(o => o.productId == product.id && o.buyerId == buyer.id && (o.Status == OrderStatus.Pending || o.Status == OrderStatus.reffered || o.Status == OrderStatus.doing)).SingleOrDefaultAsync();
+        //            #region Validation
 
-                    #endregion
-                    if (cartItem == null)
-                    {
-                        _context.orders.Add(new Order
-                        {
-                            productId = product.id,
-                            buyerId = buyer.id,
-                            Number = model.number,
-                            createdAt = DateTime.Now
-                        });
-                    }
-                    else
-                        return Ok(new { message = "The Product Added already" });
-                    _context.SaveChanges();
-                }
-                else
-                    return Ok(new { message = "The product is not available" });
+        //            #endregion
+        //            if (cartItem == null)
+        //            {
+        //                _context.orders.Add(new Order
+        //                {
+        //                    productId = product.id,
+        //                    buyerId = buyer.id,
+        //                    Number = model.number,
+        //                    createdAt = DateTime.Now
+        //                });
+        //            }
+        //            else
+        //                return Ok(new { message = "The Product Added already" });
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //            return Ok(new { message = "The product is not available" });
 
-                return Ok(new { message = "Success" });
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"catche error: {e.Message}");
-                return StatusCode(500);
-            }
-        }
+        //        return Ok(new { message = "Success" });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine($"catche error: {e.Message}");
+        //        return StatusCode(500);
+        //    }
+        //}
         [HttpPost]
         public async Task<IActionResult> EditOrder([FromBody] EditOrder order)
         {

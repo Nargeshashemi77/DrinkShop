@@ -1,16 +1,9 @@
-﻿
-
-using DrinkShop.Enum;
-
-namespace DrinkShop.Models
+﻿namespace DrinkShop.Models
 {
-    public class Order
+    public class Cart
     {
 
         public int Id { get; set; }
-        public OrderStatus Status { get; set; } = OrderStatus.Pending;
-        public DateTime createdAt { get; set; }
-
         public int Number { get; set; }
 
         //Navigation Property

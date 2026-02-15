@@ -1,4 +1,5 @@
-﻿@model List<Product>
+﻿@using DrinkShop.Models
+@model List<Product>
 @{
     ViewData["Title"] = "لیست علاقه مندیها";
 }
@@ -41,8 +42,7 @@
                                             <th scope="col">شناسه</th>
                                             <th scope="col">تصویر</th>
                                             <th scope="col">نام</th>
-                                            @*<th scope="col">قیمت</th>*@
-                                            <th scope="col">وضعیت</th>
+                                            <th scope="col">قیمت</th>
                                             <th scope="col">اقدامات</th>
                                         </tr>
                                     </thead>
@@ -56,15 +56,7 @@
                                                          alt="تصویر محصول">
                                                 </td>
                                                 <td><span>@product.Name</span></td>
-                                                @*<td><span>@product.Price</span></td>*@
-                                                @if (product.Stock)
-                                                {
-                                                    <td><span class="avl">موجود</span></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><span class="dis">ناموجود</span></td>
-                                                }
+                                                <td><span>@product.Price</span></td>
                                                 <td>
                                                     <span class="tbl-btn">
                                                         <a href="/Product/ProductDetails?productId=@product.id" class="btn btn-lg btn-primary" title="مشاهده">

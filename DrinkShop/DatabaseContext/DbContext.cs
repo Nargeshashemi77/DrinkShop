@@ -16,11 +16,10 @@ namespace DrinkShop.Data
 
         public DbSet<Buyer> buyers { get; set; }
         public DbSet<SubGroup> subGroups { get; set; }
+        public DbSet<Cart> carts { get; set; }
         public DbSet<Order> orders { get; set; }
         public DbSet<Comment> comments { get; set; }
         public DbSet<Favorite> favorites { get; set; }
-        public DbSet<WorkSamples> workSamples { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

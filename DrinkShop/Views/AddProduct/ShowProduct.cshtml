@@ -89,11 +89,7 @@
                                         <ul>
                                             <li>
                                                 <span>وضعیت :</span>
-                                                @if (Model.product.Stock)
-                                                {
-                                                    <span>موجود</span>
-                                                }
-                                                else
+                                                @if (Model.product.Stock == 0)
                                                 {
                                                     <span>ناموجود</span>
                                                 }

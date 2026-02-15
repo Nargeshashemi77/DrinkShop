@@ -5,9 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     //ulong ShowReadablePrice;
 }
-@{
-    ulong ShowReadablePrice = (ulong)Model.Price;
-}
 <link rel="stylesheet" href="~/assets/css/message-box.css?version=1">
 
 <!-- Breadcrumb Start -->
@@ -67,13 +64,34 @@
                             <div class="product-right">
                                 <span id="productIdSection" style="display:none">@Model.id</span>
                                 <h2>@Model.Name</h2>
-                                <h3>
-                                    <span>
-                                        هر @Model.Unit
-                                        @ShowReadablePrice.ToMoreReadable()
-                                    </span>
-                                    تومان
-                                </h3>
+                                @if (Model.Discount > 0)
+                                {
+                                    <h3>
+                                        <span>
+                                            هر @Model.Unit
+                                            <del>@(((ulong)Model.Price).ToMoreReadable())</del>
+                                        </span>
+                                        تومان
+                                    </h3>
+                                   
+                                    <h3>
+                                        <span>
+                                            هر @Model.Unit
+                                            @(((ulong)(Model.Price - Model.Discount)).ToMoreReadable())
+                                        </span>
+                                        تومان
+                                    </h3>
+                                }
+                                else
+                                {
+                                    <h3>
+                                        <span>
+                                            هر @Model.Unit
+                                            @(((ulong)Model.Price).ToMoreReadable())
+                                        </span>
+                                        تومان
+                                    </h3>
+                                }
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                     @if (User.IsInRole("Buyer"))

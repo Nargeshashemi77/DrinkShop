@@ -97,7 +97,7 @@
                                     <td>
                                         @if (item.OrderStat == OrderStatus.Pending)
                                         {
-                                            <a href="/Indent/CancelOrder?orderId=@(item.orderId)" class="icon">
+                                            <a href="/cart/deleteItemFromCart?orderId=@(item.orderId)" class="icon">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
                                         }

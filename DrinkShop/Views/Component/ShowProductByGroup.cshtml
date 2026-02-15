@@ -1,6 +1,6 @@
 ﻿@using DrinkShop.Convertor
 @using DrinkShop.Models
-@model List<Product>
+@model ProductPageViewModel
 
 <section class="section-b-space cmn_bg_yellow shop_page">
 
@@ -8,7 +8,7 @@
         <li></li>
         <li></li>
     </ul>
-    @if (Model.Count != 0)
+    @if (Model.Products.Count != 0)
     {
         <div class="collection-wrapper">
             <div class="container">
@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="product-wrapper-grid">
                                             <div class="row">
-                                                @foreach (var product in Model)
+                                                @foreach (var product in Model.Products)
                                                 {
                                                     <div class="col-md-4 col-6 col-grid-box">
                                                         <div class="product-box" data-aos="zoom-out">
@@ -108,20 +108,20 @@
                                             </div>
                                         </div>
                                         @{
-                                            int page = int.Parse(ViewData["page"].ToString());
-                                            int pageCount = int.Parse(ViewData["pagesCount"].ToString());
+                                            int Page = Model.CurrentPage;
+                                            int PageCount = Model.TotalPages;
                                         }
-                                        <span id="activePage" style="display:none">@int.Parse(ViewData["page"].ToString())</span>
-                                        <span id="pagesCount" style="display:none">@int.Parse(ViewData["pagesCount"].ToString())</span>
+                                        <span id="activePage" style="display:none">@Page</span>
+                                        <span id="pagesCount" style="display:none">@PageCount</span>
                                         <div class="pagination_sec">
                                             <div id="pagesContainer" class="content_detail__pagination cdp">
-                                                @if (page != 1)
+                                                @if (Page != 1)
                                                 {
                                                     <button style="cursor:pointer;" onclick="previousPage()" class="cdp_i"><i class="fa fa-angle-double-left" aria-hidden="true"></i>قبلی</button>
                                                 }
-                                                @if (pageCount <= 8)
+                                                @if (PageCount <= 8)
                                                 {
-                                                    @for (int i = 1; i <= pageCount; i++)
+                                                    @for (int i = 1; i <= PageCount; i++)
                                                     {
                                                         <a class="cdp_i">@i</a>
 
@@ -129,9 +129,9 @@
                                                 }
                                                 else
                                                 {
-                                                    if (page >= 4)
+                                                    if (Page >= 4)
                                                     {
-                                                        @for (int i = page - 3; i <= page; i++)
+                                                        @for (int i = Page - 3; i <= Page; i++)
                                                         {
                                                             <a class="cdp_i">@i</a>
                                                         }
@@ -139,27 +139,27 @@
                                                     }
                                                     else
                                                     {
-                                                        @for (int i = 1; i <= page; i++)
+                                                        @for (int i = 1; i <= Page; i++)
                                                         {
                                                             <a class="cdp_i">@i</a>
                                                         }
                                                     }
-                                                    if (page + 4 <= pageCount)
+                                                    if (Page + 4 <= PageCount)
                                                     {
-                                                        @for (int i = page + 1; i <= page + 4; i++)
+                                                        @for (int i = Page + 1; i <= Page + 4; i++)
                                                         {
                                                             <a class="cdp_i">@i</a>
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        @for (int i = page + 1; i <= pageCount; i++)
+                                                        @for (int i = Page + 1; i <= PageCount; i++)
                                                         {
                                                             <a class="cdp_i">@i</a>
                                                         }
                                                     }
                                                 }
-                                                @if (page != pageCount)
+                                                @if (Page != PageCount)
                                                 {
                                                     <button style="cursor:pointer;" onclick="nextpage()" class="cdp_i">بعدی<i style="cursor:pointer;" class="fa fa-angle-double-right" aria-hidden="true"></i></button>
                                                 }
