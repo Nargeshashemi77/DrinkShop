@@ -4,7 +4,7 @@ namespace DrinkShop.Models.View_Models
 {
     public class CartResultViewModel
     {
-        public int CartId { get; set; }   // 👈 مهم
+        public int CartId { get; set; }
 
         public int ProductId { get; set; }
 

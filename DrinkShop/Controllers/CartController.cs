@@ -9,27 +9,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using DrinkShop.Enum;
 
 namespace DrinkShop.Controllers
 {
-    [Authorize(Roles = "Buyer")]
-    [Route("carts")]
-    public class CartController : Controller
-    {
-        private DrinkShopDbContext _context;
-        private readonly UserManager<User> _userManager;
-        public CartController(DrinkShopDbContext context, UserManager<User> userManager)
-        {
-            _context = context;
-            _userManager = userManager;
-        }
+	[Authorize(Roles = "Buyer")]
+	[Route("carts")]
+	public class CartController : Controller
+	{
+		private DrinkShopDbContext _context;
+		private readonly UserManager<User> _userManager;
+		public CartController(DrinkShopDbContext context, UserManager<User> userManager)
+		{
+			_context = context;
+			_userManager = userManager;
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-        [HttpPost("items")]
+		[HttpPost("items")]
 		public async Task<IActionResult> Add([FromBody] AddInputQuery model)
 		{
 			try
@@ -105,173 +106,217 @@ namespace DrinkShop.Controllers
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (user == null) { return NotFound(); }
+		public async Task<IActionResult> GetAll()
+		{
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (user == null) { return NotFound(); }
 
-            var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
-            if (buyer == null) { return NotFound(); }
+			var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
+			if (buyer == null) { return NotFound(); }
 
-            var userCart = await _context.carts.Where(o => o.buyerId == buyer.id).IgnoreQueryFilters()
-                .Include(p => p.product)
-                .Select(o => new CartResultViewModel
-                {
-                    CartId = o.Id,
-                    ProductId = o.productId,
-                    ProductName = o.product.Name,
-                    ProductImage = o.product.productImage,
-                    UnitPrice = o.product.Price,
-                    TotalPrice = o.Number * o.product.Price,
-                    Quantity = o.Number
-                }
-                ).ToListAsync();
-            return View(userCart);
-        }
 
-        [HttpPut("items/{itemId}")]
-        public async Task<IActionResult> Update(int itemId, [FromForm] UpdateInputQuery model)
-        {
-            try
-            {
-                // بررسی مدل
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
 
-                // پیدا کردن آیتم سبد خرید
-                var cartItem = await _context.carts
-                    .Include(c => c.product)
-                    .FirstOrDefaultAsync(c => c.Id == itemId);
+			var userCart = await _context.carts.Where(o => o.buyerId == buyer.id).IgnoreQueryFilters()
+				.Include(p => p.product).ToListAsync();
 
-                if (cartItem == null)
-                    return NotFound(new { message = "Cart item not found" });
+			var result = userCart.Select(c =>
+			{
+				int finalPrice = CalculateFinalPrice(c.product);
 
-                // بررسی موجودی محصول
-                if (model.number > cartItem.product.Stock)
-                    return BadRequest(new { message = "Requested quantity exceeds stock" });
+				return new CartResultViewModel
+				{
+					CartId = c.Id,
+					ProductId = c.productId,
+					ProductName = c.product.Name,
+					ProductImage = c.product.productImage,
+					UnitPrice = finalPrice,
+					Quantity = c.Number,
+					TotalPrice = finalPrice * c.Number
+				};
+			}).ToList();
 
-                // به‌روزرسانی تعداد
-                cartItem.Number = model.number;
+			return View(result);
+		}
 
-                await _context.SaveChangesAsync();
+		[HttpPut("items/{itemId}")]
+		public async Task<IActionResult> Update(int itemId, [FromBody] UpdateInputQuery model)
+		{
+			try
+			{
+				// بررسی مدل
+				if (!ModelState.IsValid)
+					return BadRequest(ModelState);
 
-                return Ok(new { message = "Cart item updated successfully" });
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Catched Error: {e.Message}");
-                return StatusCode(500);
-            }
-        }
-        //public async Task<IActionResult> CompletePurchaseAndPayment()
-        //{
-        //    try
-        //    {
-        //        var user = await _userManager.FindByNameAsync(User.Identity.Name);
-        //        if (user == null) { return NotFound(); }
+				// پیدا کردن آیتم سبد خرید
+				var cartItem = await _context.carts
+					.Include(c => c.product)
+					.FirstOrDefaultAsync(c => c.Id == itemId);
 
-        //        var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
-        //        if (buyer == null) { return NotFound(); }
+				if (cartItem == null)
+					return NotFound(new { message = "Cart item not found" });
 
-        //        if (user.PhoneNumber == null || user.Address == null)
-        //            return RedirectToAction("Profile", "User", new { message = "Buy" });
+				// بررسی موجودی محصول
+				if (model.number > cartItem.product.Stock)
+					return BadRequest(new { message = "Requested quantity exceeds stock" });
 
-        //        var buyerCart = _context.carts.Where(c => c.buyerId == buyer.id)
-        //            .Include(c => c.product)
-        //            .ToList();
+				// به‌روزرسانی تعداد
+				cartItem.Number = model.number;
 
-        //        List<Order> orders = new List<Order>();
-        //        for (int i = 0; i < buyerCart.Count; i++)
-        //        {
-        //            orders.Add(new Order
-        //            {
-        //                buyerId = buyer.id,
-        //                productId = buyerCart[i].productId,
-        //                Price = buyerCart[i].product.Price,
-        //                Number = buyerCart[i].Number,
-        //                orderDateTime = DateTime.Now,
-        //            });
-        //        }
-        //        List<Product> products = new List<Product>();
-        //        var buyerCartProductIdlist = buyerCart.Select(c => c.productId).ToList();
-        //        products = _context.products.Where(p => buyerCartProductIdlist.Contains(p.id)).ToList();
-        //        var sortBuyerCart = buyerCart.OrderBy(c => c.productId).ToList();
-        //        for (int i = 0; i < sortBuyerCart.Count; i++)
-        //        {
-        //            products[i].Stock -= sortBuyerCart[i].Number; //* products[i].Weight);
-        //        }
-        //        _context.products.UpdateRange(products);
-        //        _context.orders.AddRange(orders);
-        //        _context.SaveChangesAsync();
-        //        return RedirectToAction("Factor");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"Catched Error: {e.Message}");
-        //        return StatusCode(500);
-        //    }
-        //}
-        //public async Task<IActionResult> Factor()
-        //{
-        //    try
-        //    {
-        //        var user = await _userManager.FindByNameAsync(User.Identity.Name);
-        //        if (user == null) { return NotFound(); }
+				await _context.SaveChangesAsync();
 
-        //        var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
-        //        if (buyer == null) { return NotFound(); }
+				return Ok(new { message = "Update successfully" });
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Catched Error: {e.Message}");
+				return StatusCode(500);
+			}
+		}
 
-        //        var userCart = _context.carts.Where(c => c.buyerId == buyer.id).ToList();
-        //        var buyerCart = _context.carts.Where(c => c.buyerId == buyer.id)
-        //            .Include(p => p.product)
-        //            .Select(i => new CartViewModel
-        //            {
-        //                productId = i.productId,
-        //                productName = i.product.Name,
-        //                productPrice = i.product.Price,
-        //                selectedNumberOfProducts = i.Number.ToString()
-        //            }
-        //            ).ToList();
-        //        var factor = new FactorViewModel
-        //        {
-        //            Address = user.Address,
-        //            Telphone = user.PhoneNumber,
-        //            cartItems = buyerCart
-        //        };
-        //        _context.RemoveRange(userCart);
-        //        _context.SaveChanges();
-        //        return View(factor);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"Catched Error: {e.Message}");
-        //        return StatusCode(500);
-        //    }
-        //}
+		[HttpPost("checkout")]
+		public async Task<IActionResult> Checkout()
+		{
+			using var transaction = await _context.Database.BeginTransactionAsync();
 
-        [HttpDelete("items/{itemId}")]
-        public async Task<IActionResult> Delete(int itemId)
-        {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                if (user == null) { return NotFound(); }
+			try
+			{
+				var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+				if (user == null)
+					return Unauthorized();
 
-                var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
-                if (buyer == null) { return NotFound(); }
+				var buyer = await _context.buyers
+					.FirstOrDefaultAsync(b => b.userId == user.Id);
 
-                var deleteItem = _context.carts.Where(c => c.Id == itemId).SingleOrDefault();
-                if (deleteItem == null) { return NotFound(); }
+				if (buyer == null)
+					return BadRequest(new { message = "Buyer profile not found" });
 
-                _context.carts.Remove(deleteItem);
-                _context.SaveChanges();
-                return RedirectToAction("userCart", "userCart");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Catched Error: {e.Message}");
-                return StatusCode(500);
-            }
-        }
-    }
+				var cartItems = await _context.carts
+					.Include(c => c.product)
+					.Where(c => c.buyerId == buyer.id)
+					.ToListAsync();
+
+				if (!cartItems.Any())
+					return BadRequest(new { message = "Cart is empty" });
+
+				foreach (var item in cartItems)
+				{
+					if (item.Number > item.product.Stock)
+					{
+						return BadRequest(new
+						{
+							message = $"Product '{item.product.Name}' does not have enough stock"
+						});
+					}
+				}
+
+				var order = new Order
+				{
+					buyerId = buyer.id,
+					createdAt = DateTime.UtcNow,
+					Status = OrderStatus.Pending,
+					TotalPrice = 0
+				};
+
+				await _context.orders.AddAsync(order);
+				await _context.SaveChangesAsync();
+
+				int totalPrice = 0;
+
+				foreach (var item in cartItems)
+				{
+					var product = item.product;
+
+					int finalPrice = CalculateFinalPrice(product);
+
+					var orderItem = new OrderItems
+					{
+						OrderId = order.Id,
+						ProductId = product.id,
+						Quantity = item.Number,
+						OriginalPrice = product.Price,
+						UnitPrice = finalPrice,
+						TotalPrice = finalPrice * item.Number
+					};
+
+					await _context.orderItems.AddAsync(orderItem);
+
+					totalPrice += orderItem.TotalPrice;
+
+					product.Stock -= item.Number;
+				}
+
+				order.TotalPrice = totalPrice;
+
+				_context.carts.RemoveRange(cartItems);
+
+				await _context.SaveChangesAsync();
+				await transaction.CommitAsync();
+
+				return RedirectToAction("Invoice", "Cart", new { orderId = order.Id });
+			}
+			catch (Exception e)
+			{
+				await transaction.RollbackAsync();
+				Console.WriteLine($"Checkout Error: {e.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("Invoice")]
+		public async Task<IActionResult> Invoice(int orderId)
+		{
+			try
+			{
+				var order = await _context.orders
+				.Include(o => o.orderItems)
+				.ThenInclude(oi => oi.Product)
+				.FirstOrDefaultAsync(o => o.Id == orderId);
+
+				if (order == null)
+					return NotFound();
+
+				return View(order);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Catched Error: {e.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpDelete("items/{itemId}")]
+		public async Task<IActionResult> Delete(int itemId)
+		{
+			try
+			{
+				var user = await _userManager.FindByNameAsync(User.Identity.Name);
+				if (user == null) { return NotFound(); }
+
+				var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
+				if (buyer == null) { return NotFound(); }
+
+				var deleteItem = _context.carts.Where(c => c.Id == itemId).SingleOrDefault();
+				if (deleteItem == null) { return NotFound(); }
+
+				_context.carts.Remove(deleteItem);
+				_context.SaveChanges();
+				return RedirectToAction("userCart", "userCart");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Catched Error: {e.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		private int CalculateFinalPrice(Product product)
+		{
+			if (product.Discount > 0)
+			{
+				return product.Price - product.Discount;
+			}
+
+			return product.Price;
+		}
+	}
 }

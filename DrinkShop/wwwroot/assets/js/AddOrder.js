@@ -106,10 +106,10 @@
                         if (closeButton.classList.contains("error"))
                             closeButton.classList.remove("error");
                         closeButton.classList.add("success");
-                        messageBoxText.innerText = "محصول با موفقیت به سفارشات شما افزوده شد. در حال انتقال به صفحه لیست سفارشات ...";
+                        messageBoxText.innerText = "محصول با موفقیت به سفارشات شما افزوده شد. در حال انتقال به سبد خرید ...";
                         showMessage();
                         setTimeout(() => {
-                            window.location.replace("/cart/userCart");
+                            window.location.replace("/carts");
                         }, 4000)
                     }
                 }
