@@ -24,9 +24,7 @@
     }
 
     function deleteCartItem(cartId) {
-        fetch(`/carts/items/${cartId}`, {
-            method: "DELETE",
-        });
+        deleteItem(cartId);
     }
 
     async function updateCartItem(cartId, quantity) {
@@ -42,6 +40,18 @@
 
         if (!response.ok) throw new Error("Request failed");
 
-        return await response.json();;
+        return await response.json();
+    }
+
+    async function deleteItem(cartId) {
+        const response = await fetch(`/carts/items/${cartId}`, {
+            method: "DELETE",
+        });
+
+        if (response.ok) {
+            setTimeout(() => {
+                window.location.replace("/carts");
+            }, 2000)
+        }
     }
 }

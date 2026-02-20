@@ -1,0 +1,73 @@
+﻿@model CheckoutViewModel
+@{
+    ViewData["Title"] = "نهایی سازی خرید";
+    var totalCart = Model.CartItems.Sum(x => x.TotalPrice);
+}
+
+<section class="section-b-space cmn_bg checkout-page">
+    <div class="container padding-cls">
+        <div class="checkout-form">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="checkout-title">
+                        <h3>جزئیات صورتحساب</h3>
+                    </div>
+                    <div class="row check-out">
+                        <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                            <div class="field-label">نام</div>
+                            <textarea>@Model.UserInfo.Name</textarea>
+                        </div>
+                        <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                            <div class="field-label">نام خانوادگی</div>
+                            <textarea>@Model.UserInfo.Family</textarea>
+                        </div>
+                        <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                            <div class="field-label">تلفن</div>
+                            <textarea>@Model.UserInfo.PhoneNumber</textarea>
+                        </div>
+                        <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                            <div class="field-label">آدرس ایمیل</div>
+                            <textarea>@Model.UserInfo.Email</textarea>
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="field-label">آدرس</div>
+                            <textarea rows="2">@Model.UserInfo.Address</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="checkout-details">
+                        <div class="order-box">
+                            <div class="title-box">
+                                <div>مجموع <span>محصول</span></div>
+                            </div>
+                            <ul class="qty">
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <li>@item.ProductName × @item.Quantity <span>@(((ulong)item.TotalPrice).ToMoreReadable()) تومان</span></li>
+                                }
+                            </ul>
+                            <ul class="total">
+                                <li>مجموع <span class="count">@(((ulong)totalCart).ToMoreReadable()) تومان</span></li>
+                            </ul>
+                        </div>
+
+                        <form asp-action="Checkout" asp-controller="Cart" method="post">
+                            <div class="payment-box">
+                                <div class="text-right">
+                                    <button class="btn btn-solid" type="submit">
+                                        پرداخت
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+</section>

@@ -91,7 +91,7 @@
                     else if (data.message === "Should complete user information first") {
                         window.location.href = data.url;
                     }
-                    else if (data.message === "The product is not available") {
+                    else if (data.message === "Product not found") {
                         messageBox.style.backgroundColor = "#ef2f2f";
                         messageBox.style.border = "2px solid #ef2f2f";
                         if (closeButton.classList.contains("success"))
@@ -106,7 +106,7 @@
                         if (closeButton.classList.contains("error"))
                             closeButton.classList.remove("error");
                         closeButton.classList.add("success");
-                        messageBoxText.innerText = "محصول با موفقیت به سفارشات شما افزوده شد. در حال انتقال به سبد خرید ...";
+                        messageBoxText.innerText = "محصول با موفقیت به سبد خرید شما افزوده شد. در حال انتقال به سبد خرید ...";
                         showMessage();
                         setTimeout(() => {
                             window.location.replace("/carts");

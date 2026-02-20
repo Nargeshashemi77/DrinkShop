@@ -1,0 +1,82 @@
+﻿@model InvoiceViewModel
+@{
+    ViewData["Title"] = "فاکتور خرید";
+}
+<section class="section-b-space light-layout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="success-text">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    <h2>با سپاس از شما</h2>
+                    <p>پرداخت با موفقیت انجام می شود و سفارش شما در حال پردازش است</p>
+                    <p>شناسه سفارش:@Model.OrderInfo.Id</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-b-space success_page cmn_bg_yellow">
+    <ul class="plus_decore">
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-order">
+                    <h3>جزئیات سفارش شما</h3>
+                    <div class="row product-order-detail">
+                        @foreach (var item in Model.OrderInfo.orderItems)
+                        {
+                            <div class="col-3">
+                                <img src="~/assets/images/product-image/@item.Product.productImage>
+                            </div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>نام محصول</h4>
+                                    <h5>@item.Product.Name</h5>
+                                </div>
+                            </div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>مقدار</h4>
+                                    <h5>@item.Quantity</h5>
+                                </div>
+                            </div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>قیمت</h4>
+                                    <h5>@item.UnitPrice</h5>
+                                </div>
+                            </div>
+                        }
+                        <div class="total-sec">
+                            <ul>
+                                <li>حمل و نقل <span>50000 تومان</span></li>
+                                <li>مالیات (GST) <span>@(((ulong)(Model.OrderInfo.TotalPrice * 0.1)).ToMoreReadable())) تومان</span></li>
+                            </ul>
+                        </div>
+                        <div class="final-total">
+                            <h3>مجموع <span>@(((ulong)Model.OrderInfo.TotalPrice).ToMoreReadable()) تومان</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row order-success-sec">
+                        <div class="col-sm-6">
+                            <h4>خلاصه</h4>
+                            <ul class="order-detail">
+                                <li>شماره سفارش: @Model.OrderInfo.Id</li>
+                                <li>تاریخ: @Model.OrderInfo.createdAt.ToShamsi()</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>آدرس حمل و نقل</h4>
+                            <textarea>@Model.UserInfo.Address</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

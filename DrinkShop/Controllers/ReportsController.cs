@@ -29,48 +29,48 @@ namespace DrinkShop.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> UserCertainOrders(string username, int? orderprice, string startdate, string enddate)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-                return NotFound();
+        //public async Task<IActionResult> UserCertainOrders(string username, int? orderprice, string startdate, string enddate)
+        //{
+        //    var user = await _userManager.FindByNameAsync(username);
+        //    if (user == null)
+        //        return NotFound();
 
-            var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
-            if (buyer == null)
-                return NotFound();
-            DateTime StartDate = DateTime.Parse(startdate);
-            DateTime EndDate = DateTime.Parse(enddate);
+        //    var buyer = _context.buyers.SingleOrDefault(b => b.userId == user.Id);
+        //    if (buyer == null)
+        //        return NotFound();
+        //    DateTime StartDate = DateTime.Parse(startdate);
+        //    DateTime EndDate = DateTime.Parse(enddate);
 
-            List<UserCertainOrderViewModel> orders;
+        //    List<UserCertainOrderViewModel> orders;
 
-            if (orderprice != null)
-                orders = _context.orders.IgnoreQueryFilters()
-                .Include(o => o.product).Where(o => o.buyerId == buyer.id && o.product.Price > orderprice && (StartDate < o.createdAt && o.createdAt < EndDate))
-                .Select(o => new UserCertainOrderViewModel
-                {
-                    orderId = o.Id,
-                    productId = o.productId,
-                    productImage = o.product.productImage,
-                    productName = o.product.Name,
-                    productPrice = o.product.Price,
-                    orderDatetime = o.createdAt
-                }).ToList();
+        //    if (orderprice != null)
+        //        orders = _context.orders.IgnoreQueryFilters()
+        //        .Include(o => o.orderItems).Where(o => o.buyerId == buyer.id && o.orderItems.Price > orderprice && (StartDate < o.createdAt && o.createdAt < EndDate))
+        //        .Select(o => new UserCertainOrderViewModel
+        //        {
+        //            orderId = o.Id,
+        //            productId = o.productId,
+        //            productImage = o.product.productImage,
+        //            productName = o.product.Name,
+        //            productPrice = o.product.Price,
+        //            orderDatetime = o.createdAt
+        //        }).ToList();
 
-            else
-                orders = _context.orders.IgnoreQueryFilters()
-                           .Include(o => o.product).Where(o => o.buyerId == buyer.id && (StartDate < o.createdAt && o.createdAt < EndDate))
-                           .Select(o => new UserCertainOrderViewModel
-                           {
-                               orderId = o.Id,
-                               productId = o.productId,
-                               productImage = o.product.productImage,
-                               productName = o.product.Name,
-                               productPrice = o.product.Price,
-                               orderDatetime = o.createdAt
-                           }).ToList();
+        //    else
+        //        orders = _context.orders.IgnoreQueryFilters()
+        //                   .Include(o => o.product).Where(o => o.buyerId == buyer.id && (StartDate < o.createdAt && o.createdAt < EndDate))
+        //                   .Select(o => new UserCertainOrderViewModel
+        //                   {
+        //                       orderId = o.Id,
+        //                       productId = o.productId,
+        //                       productImage = o.product.productImage,
+        //                       productName = o.product.Name,
+        //                       productPrice = o.product.Price,
+        //                       orderDatetime = o.createdAt
+        //                   }).ToList();
 
-            return View(orders);
-        }
+        //    return View(orders);
+        //}
         [HttpGet]
         public async Task<IActionResult> OrderChart(string? orderStatus, string? period)
         {
@@ -85,35 +85,35 @@ namespace DrinkShop.Controllers
                     switch (orderStatus)
                     {
                         case "registered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1));
                             break;
                         case "finished":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.finished));
                             break;
                         case "canceled":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.canceled));
                             break;
                         case "pending":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.Pending));
                             break;
                         case "doing":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.doing));
                             break;
                         case "rejected":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.rejected));
                             break;
                         case "reffered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.reffered));
                             break;
                         default:
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(p => p.product)
+                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1));
                             break;
                     }
@@ -216,11 +216,12 @@ namespace DrinkShop.Controllers
                 List<BarChartViewModel> barChart;
 
                 barChart = _context.products.IgnoreQueryFilters()
-                   .Include(o => o.orders)
+                   .Include(o => o.orderItem)
+                   .ThenInclude(oi => oi.Order)
                    .Select(p => new BarChartViewModel
                    {
                        Lable = ("#" + p.id + " " + p.Name),
-                       Quantity = p.orders.Count(o => o.Status == OrderStatus.finished)
+                       Quantity = p.orderItem.Count(o => o.Order.Status == OrderStatus.finished)
                    }).ToList();
 
                 int topSellers;

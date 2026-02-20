@@ -2,7 +2,6 @@
 using DrinkShop.Enum;
 using DrinkShop.Models;
 using DrinkShop.Models.View_Models;
-using DrinkShop.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,16 +72,14 @@ namespace DrinkShop.Controllers
 
                 else
                     whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.rejected);
-                orders = whichOrders.Include(p => p.product)
-                .Include(b => b.buyer).ThenInclude(u => u.user)
+
+                orders = whichOrders.Include(b => b.buyer).ThenInclude(u => u.user)
                 .Select(o => new OrderViewModel
                 {
                     orderId = o.Id,
-                    productId = o.productId,
-                    productName = o.product.Name,
-                    productImage = o.product.productImage,
-                    productPrice = o.product.Price,
+                    orderPrice = o.TotalPrice,
                     userName = o.buyer.user.UserName,
+                    orderStatus = o.Status,
                     orderDate = o.createdAt
                 })
                 .ToList();

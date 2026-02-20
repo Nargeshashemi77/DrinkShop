@@ -6,7 +6,7 @@ namespace DrinkShop.Models
     {
         public Product()
         {
-            orders = new List<Order>();
+            orderItem = new List<OrderItems>();
         }
         [Key]
         public int id { get; set; }
@@ -24,6 +24,6 @@ namespace DrinkShop.Models
         public string productImage { get; set; }
         public Group group { get; set; }
         public SubGroup subGroup { get; set; }
-        public ICollection<Order> orders { get; set; }
+        public ICollection<OrderItems> orderItem { get; set; }
     }
 }
