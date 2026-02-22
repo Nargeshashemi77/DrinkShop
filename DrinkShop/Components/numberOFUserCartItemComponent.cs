@@ -1,5 +1,4 @@
 ﻿using DrinkShop.Data;
-using DrinkShop.Enum;
 using DrinkShop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

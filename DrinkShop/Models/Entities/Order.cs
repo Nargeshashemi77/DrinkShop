@@ -1,4 +1,5 @@
-﻿using DrinkShop.Enum;
+﻿using DrinkShop.Enums;
+using DrinkShop.Shared;
 
 namespace DrinkShop.Models
 {

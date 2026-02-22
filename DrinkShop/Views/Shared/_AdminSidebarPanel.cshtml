@@ -72,17 +72,17 @@
                         <ul class="sub-menu" id="products" data-parent="#sidebar-menu">
                             <li>
                                 <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="pending" class="sidenav-item-link">
-                                    <span>سفارشات در انتظار </span>
+                                    <span>سفارشات در حال پردازش </span>
                                 </a>
                             </li>
                             <li>
-                                <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="reffered" class="sidenav-item-link">
-                                    <span>سفارشات ارجاع داده شده</span>
+                                <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="preparation" class="sidenav-item-link">
+                                    <span>سفارشات در حال آماده سازی</span>
                                 </a>
                             </li>
                             <li>
-                                <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="doing" class="sidenav-item-link">
-                                    <span>سفارشات در حال انجام</span>
+                                <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="sending" class="sidenav-item-link">
+                                    <span>سفارشات در حال ارسال</span>
                                 </a>
                             </li>
                             <li>
@@ -95,18 +95,13 @@
                                     <span>سفارشات لغو شده</span>
                                 </a>
                             </li>
-                            <li>
-                                <a asp-controller="Admin" asp-action="OrderList" asp-route-WhichOrders="rejected" class="sidenav-item-link">
-                                    <span>سفارشات رد شده</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
                 <li class="has-sub">
-                    <a class="sidenav-item-link" href="#">
+                  @*   <a class="sidenav-item-link" href="#">
                         <i class="fa-solid fa-table-list fa-rotate-180 fa-xs"></i> <span class="nav-text">گزارشات جدولی</span> <b class="caret"></b>
-                    </a>
+                    </a> *@
                     <div class="collapse">
                         <ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
                             <li>

@@ -24,6 +24,29 @@ namespace DrinkShop.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Orders()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) { return NotFound(); }
+
+            Buyer? buyer = await _context.buyers.SingleOrDefaultAsync(b => b.userId == user.Id);
+            if (buyer == null) { return NotFound(); }
+
+            var userOrders = await _context.orders.Where(o => o.buyerId == buyer.id).IgnoreQueryFilters()
+                .Include(o => o.orderItems)
+                .Select(o => new UserOrderViewModel
+                {
+                    Id = o.Id,
+                    TotalPrice = o.TotalPrice,
+                    Status = o.Status,
+                    createdAt = o.createdAt
+                })
+                .ToListAsync();
+
+            return View(userOrders);
+        }
         #region User Profile
         [HttpGet]
         public async Task<IActionResult> Profile(string? message, string? Url)

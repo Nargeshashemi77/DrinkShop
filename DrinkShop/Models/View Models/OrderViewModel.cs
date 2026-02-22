@@ -1,6 +1,8 @@
 ﻿
 
-using DrinkShop.Enum;
+
+
+using DrinkShop.Enums;
 
 namespace DrinkShop.Models.View_Models
 {

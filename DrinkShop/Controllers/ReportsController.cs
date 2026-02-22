@@ -1,6 +1,6 @@
 ﻿using DrinkShop.Convertor;
 using DrinkShop.Data;
-using DrinkShop.Enum;
+using DrinkShop.Enums;
 using DrinkShop.Models;
 using DrinkShop.Models.View_Models;
 using Microsoft.AspNetCore.Authorization;
@@ -72,7 +72,7 @@ namespace DrinkShop.Controllers
         //    return View(orders);
         //}
         [HttpGet]
-        public async Task<IActionResult> OrderChart(string? orderStatus, string? period)
+        public async Task<IActionResult> OrderChart(OrderStatus? orderStatus, string? period)
         {
             try
             {
@@ -84,33 +84,25 @@ namespace DrinkShop.Controllers
                 {
                     switch (orderStatus)
                     {
-                        case "registered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
-                           .Where(o => DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1));
-                            break;
-                        case "finished":
+                        case OrderStatus.finished:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.finished));
                             break;
-                        case "canceled":
+                        case OrderStatus.canceled:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.canceled));
                             break;
-                        case "pending":
+                        case OrderStatus.Pending:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
                            .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.Pending));
                             break;
-                        case "doing":
+                        case OrderStatus.preparation:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
-                           .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.doing));
+                           .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.preparation));
                             break;
-                        case "rejected":
+                        case OrderStatus.Sending:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
-                           .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.rejected));
-                            break;
-                        case "reffered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
-                           .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.reffered));
+                           .Where(o => (DateTime.Now.Date <= o.createdAt && o.createdAt.Date < DateTime.Now.Date.AddDays(1)) && (o.Status == OrderStatus.Sending));
                             break;
                         default:
                             ordersQueryable = _context.orders.IgnoreQueryFilters().Include(oi => oi.orderItems)
@@ -123,32 +115,25 @@ namespace DrinkShop.Controllers
                 {
                     switch (orderStatus)
                     {
-                        case "registered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters();
-                            break;
-                        case "finished":
+                        case OrderStatus.finished:
                             ordersQueryable = _context.orders.IgnoreQueryFilters()
                            .Where(o => o.Status == OrderStatus.finished);
                             break;
-                        case "canceled":
+                        case OrderStatus.canceled:
                             ordersQueryable = _context.orders.IgnoreQueryFilters()
                            .Where(o => o.Status == OrderStatus.canceled);
                             break;
-                        case "pending":
+                        case OrderStatus.Pending:
                             ordersQueryable = _context.orders.IgnoreQueryFilters()
                            .Where(o => o.Status == OrderStatus.Pending);
                             break;
-                        case "doing":
+                        case OrderStatus.Sending:
                             ordersQueryable = _context.orders.IgnoreQueryFilters()
-                           .Where(o => o.Status == OrderStatus.doing);
+                           .Where(o => o.Status == OrderStatus.Sending);
                             break;
-                        case "rejected":
+                        case OrderStatus.preparation:
                             ordersQueryable = _context.orders.IgnoreQueryFilters()
-                           .Where(o => o.Status == OrderStatus.rejected);
-                            break;
-                        case "reffered":
-                            ordersQueryable = _context.orders.IgnoreQueryFilters()
-                           .Where(o => o.Status == OrderStatus.reffered);
+                           .Where(o => o.Status == OrderStatus.preparation);
                             break;
                         default:
                             ordersQueryable = _context.orders.IgnoreQueryFilters();
@@ -215,14 +200,15 @@ namespace DrinkShop.Controllers
             {
                 List<BarChartViewModel> barChart;
 
-                barChart = _context.products.IgnoreQueryFilters()
+                barChart = await _context.products.IgnoreQueryFilters()
                    .Include(o => o.orderItem)
                    .ThenInclude(oi => oi.Order)
                    .Select(p => new BarChartViewModel
                    {
                        Lable = ("#" + p.id + " " + p.Name),
-                       Quantity = p.orderItem.Count(o => o.Order.Status == OrderStatus.finished)
-                   }).ToList();
+                       Quantity = p.orderItem.Where(oi => oi.Order.Status == OrderStatus.finished)
+                                             .Sum(oi => (int?)oi.Quantity) ?? 0
+                   }).ToListAsync();
 
                 int topSellers;
                 if (barChart.Count >= 10)

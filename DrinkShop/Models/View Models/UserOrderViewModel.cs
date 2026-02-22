@@ -1,20 +1,16 @@
-﻿
-
-using DrinkShop.Enum;
+﻿using DrinkShop.Enums;
+using DrinkShop.Shared;
 
 namespace DrinkShop.Models.View_Models
 {
     public class UserOrderViewModel
     {
-        public int orderId { get; set; }
-        public string orderDescription { get; set; }
-        public int productId { get; set; }      
-        public string productName { get; set; }
-        public string productImage { get; set; }
-        public int productPrice { get; set; }
+        public int Id { get; set; }
 
-        public int number { get; set; }
-        public DateTime registerDateTime { get; set; }
-        public OrderStatus OrderStat { get; set; }
+        public int TotalPrice { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.Pending;
+
+        public string StatusDescription => Status.GetDisplayName();
+        public DateTime createdAt { get; set; }
     }
 }

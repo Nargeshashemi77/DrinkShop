@@ -30,7 +30,7 @@
                         @foreach (var item in Model.OrderInfo.orderItems)
                         {
                             <div class="col-3">
-                                <img src="~/assets/images/product-image/@item.Product.productImage>
+                                <img src="~/assets/images/product-image/@item.Product.productImage">
                             </div>
                             <div class="col-3 order_detail">
                                 <div>
@@ -54,11 +54,15 @@
                         <div class="total-sec">
                             <ul>
                                 <li>حمل و نقل <span>50000 تومان</span></li>
-                                <li>مالیات (GST) <span>@(((ulong)(Model.OrderInfo.TotalPrice * 0.1)).ToMoreReadable())) تومان</span></li>
+                                <li>مالیات <span>@(((ulong)(Model.OrderInfo.TotalPrice * 0.1)).ToMoreReadable()) تومان</span></li>
                             </ul>
                         </div>
                         <div class="final-total">
-                            <h3>مجموع <span>@(((ulong)Model.OrderInfo.TotalPrice).ToMoreReadable()) تومان</span></h3>
+                            <h3>
+                                <span>مجموع</span>
+
+                                <span>@(((ulong)Model.OrderInfo.TotalPrice).ToMoreReadable()) تومان</span>
+                            </h3>
                         </div>
                     </div>
                 </div>

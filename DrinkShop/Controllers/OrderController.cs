@@ -35,21 +35,10 @@ namespace DrinkShop.Controllers
             Buyer? buyer = await _context.buyers.SingleOrDefaultAsync(b => b.userId == user.Id);
             if (buyer == null) { return NotFound(); }
 
-            var userCart = await _context.orderItems.Where(o=>o.Order.buyerId == buyer.id).IgnoreQueryFilters()
-                .Include(o=>o.Order)
-                .Select(o => new UserOrderViewModel
-                {
-                    orderId = o.Id,
-                    productId = o.ProductId,
-                    productName = o.Product.Name,
-                    productImage = o.Product.productImage,
-                    productPrice = (int)o.UnitPrice,
-                    number = o.Quantity,
-                    registerDateTime = o.Order.createdAt,
-                    OrderStat = o.Order.Status
-                }
-                ).ToListAsync();
-            return View(userCart);
+            var userOrders = await _context.orders.Where(o => o.buyerId == buyer.id).IgnoreQueryFilters()
+                .Include(o => o.orderItems).ToListAsync();
+
+            return View(userOrders);
         }
     }
 }

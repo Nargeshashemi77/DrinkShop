@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using DrinkShop.Enum;
+using DrinkShop.Enums;
+
 
 namespace DrinkShop.Controllers
 {

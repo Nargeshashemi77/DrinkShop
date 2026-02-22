@@ -1,5 +1,5 @@
 ﻿using DrinkShop.Data;
-using DrinkShop.Enum;
+using DrinkShop.Enums;
 using DrinkShop.Models;
 using DrinkShop.Models.View_Models;
 using Microsoft.AspNetCore.Authorization;
@@ -58,20 +58,17 @@ namespace DrinkShop.Controllers
                 if (WhichOrders == "pending")
                     whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.Pending);
 
-                else if (WhichOrders == "doing")
-                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.doing);
+                else if (WhichOrders == "preparation")
+                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.preparation);
 
-                else if (WhichOrders == "reffered")
-                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.reffered);
+                else if (WhichOrders == "sending")
+                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.Sending);
 
                 else if (WhichOrders == "canceled")
                     whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.canceled);
 
-                else if (WhichOrders == "finished")
-                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.finished);
-
                 else
-                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.rejected);
+                    whichOrders = _context.orders.IgnoreQueryFilters().Where(c => c.Status == OrderStatus.finished);
 
                 orders = whichOrders.Include(b => b.buyer).ThenInclude(u => u.user)
                 .Select(o => new OrderViewModel

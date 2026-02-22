@@ -12,15 +12,15 @@
             <div>
                 @if (ViewData["OrdersType"].Equals("pending"))
                 {
-                    <h1>سفارشات در انتظار</h1>
+                    <h1>سفارشات در حال پردازش</h1>
                 }
-                else if (ViewData["OrdersType"].Equals("reffered"))
+                else if (ViewData["OrdersType"].Equals("preparation"))
                 {
-                    <h1>سفارشات ارجاع داده شده</h1>
+                    <h1>سفارشات در حال آماده سازی</h1>
                 }
-                else if (ViewData["OrdersType"].Equals("doing"))
+                else if (ViewData["OrdersType"].Equals("sending"))
                 {
-                    <h1>سفارشات در حال انجام</h1>
+                    <h1>سفارشات در حال ارسال</h1>
                 }
                 else if (ViewData["OrdersType"].Equals("finished"))
                 {
@@ -29,10 +29,6 @@
                 else if (ViewData["OrdersType"].Equals("canceled"))
                 {
                     <h1>سفارشات لغو شده</h1>
-                }
-                else
-                {
-                    <h1>سفارشات رد شده</h1>
                 }
                 <p class="breadcrumbs">
                 </p>
@@ -72,28 +68,28 @@
                                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="1" asp-route-wichOrdersList="pending" class="dropdown-item">ارجاع به سرویس کار</a>
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="5" asp-route-wichOrdersList="pending" class="dropdown-item">رد سفارش</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="1" asp-route-wichOrdersList="pending" class="dropdown-item">در حال آماده سازی</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="3" asp-route-wichOrdersList="pending" class="dropdown-item">لغو سفارش</a>
                                                         </div>
                                                     }
-                                                    else if (ViewData["OrdersType"].Equals("reffered"))
+                                                    else if (ViewData["OrdersType"].Equals("preparation"))
                                                     {
                                                         <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
                                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="0" asp-route-wichOrdersList="reffered" class="dropdown-item">در انتظار</a>
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="5" asp-route-wichOrdersList="reffered" class="dropdown-item">رد سفارش</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="2" asp-route-wichOrdersList="reffered" class="dropdown-item">در حال ارسال</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="3" asp-route-wichOrdersList="reffered" class="dropdown-item">لغو سفارش</a>
                                                         </div>
                                                     }
-                                                    else if (ViewData["OrdersType"].Equals("rejected"))
+                                                    else if (ViewData["OrdersType"].Equals("sending"))
                                                     {
                                                         <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
                                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="0" asp-route-wichOrdersList="rejected" class="dropdown-item">در انتظار</a>
-                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="1" asp-route-wichOrdersList="rejected" class="dropdown-item">ارجاع به سرویس کار</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="4" asp-route-wichOrdersList="rejected" class="dropdown-item">تکمیل شده</a>
+                                                            <a asp-controller="Admin" asp-action="DeterminingOrderStatus" asp-route-orderId="@Model[i].orderId" asp-route-status="3" asp-route-wichOrdersList="rejected" class="dropdown-item">لغو سفارش</a>
                                                         </div>
                                                     }
                                                 </div>
